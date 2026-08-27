@@ -1,0 +1,25 @@
+{
+  "name": "caddie",
+  "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
+  "owner": {
+    "name": "Ryan Zigler",
+    "url": "https://github.com/ryanzigler"
+  },
+  "plugins": [
+    {
+      "name": "caddie",
+      "displayName": "Caddie",
+      "source": "./",
+      "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Ryan Zigler"
+      },
+      "homepage": "https://github.com/ryanzigler/caddie",
+      "repository": "https://github.com/ryanzigler/caddie",
+      "license": "MIT",
+      "category": "engineering",
+      "keywords": ["skills", "engineering", "workflows"]
+    }
+  ]
+}
