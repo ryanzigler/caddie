@@ -105,6 +105,7 @@ claude plugin marketplace update caddie
 
 - [`grilling`](skills/grilling/SKILL.md): asks every currently answerable decision at once, each with a recommendation, then waits. Replaces `superpowers:brainstorming`.
 - [`wizard`](skills/wizard/SKILL.md): generates a bash wizard for the steps only a human can do, like entering a secret.
+- [`file-issue`](skills/file-issue/SKILL.md): captures a bug or feature you mentioned in passing as a formatted GitHub issue, filed by a background agent so the current work never stops.
 
 ### Working unattended
 
@@ -119,6 +120,7 @@ claude plugin marketplace update caddie
 ## Agents
 
 - [`comment-sicko`](agents/comment-sicko.md): deletes comments and flags suppressions. Spawned by `no-comments`.
+- [`issue-filer`](agents/issue-filer.md): formats a rough report into a real GitHub issue, checks for duplicates, obeys the repo's own templates, and creates it with `gh`. Spawned by `file-issue`.
 - [`code-simplifier`](agents/code-simplifier.md): tidies recently written code to house style (arrow functions, named exports, no nested ternaries, `const` everywhere) without changing behavior.
 
 ## Hooks

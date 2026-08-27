@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 # PreToolUse hook on the Skill tool.
 # Blocks skills that caddie has retired in favor of one of its own, and tells
-# the model which replacement to call instead. Exit 2 blocks; stderr reaches
-# the model. Any other skill passes through untouched.
+# the model which replacement to call instead. The block is a structured deny
+# decision on stdout with exit 0, not exit-2 stderr: this is a routing choice,
+# and the stderr path renders it to the user as a hook failure.
+# Any other skill passes through untouched.
+#
+# Stock macOS bash is 3.2, which cannot parse a here-document inside $( ), so
+# the message is piped into jq rather than captured into a variable first.
 set -uo pipefail
 
 # $1 retired skill, $2 exact `skill` argument for the replacement, $3 why it wins.
 redirect() {
-  cat >&2 <<EOF
-$1 is retired in favour of $2. This is a routing decision, not a permission
-denial: the work still needs a skill, and $2 is the one that covers it.
+  cat <<EOF | jq -Rs '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: .}}'
+$1 is retired in favour of $2. Nothing has gone wrong: the work still needs a
+skill, and $2 is the one that covers it.
 
 Call the Skill tool now with skill: $2
 
@@ -21,7 +26,7 @@ process and following the wrong one from memory is the failure this block exists
 to prevent. If the replacement turns out to be wrong for this situation, say so
 and ask — do not fall back to working unskilled.
 EOF
-  exit 2
+  exit 0
 }
 
 payload="$(cat)"
