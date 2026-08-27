@@ -5,6 +5,9 @@ description: Diagnose and drive changesets-based releases in a pnpm workspace. U
 
 # Changeset releases
 
+This skill diagnoses. To drive a release from pending changes to a verified publish, use
+`cut-release`.
+
 Two questions get confused constantly: *did the version bump happen* and *did the publish
 happen*. They fail separately, for different reasons, in different jobs. Establish which
 one you are looking at before proposing a fix.

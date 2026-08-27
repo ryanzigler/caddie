@@ -83,6 +83,7 @@ claude plugin marketplace update caddie
 - [`typescript-best-practices`](skills/typescript-best-practices/SKILL.md): the same discipline in concrete TypeScript syntax. Fires on any `.ts`, `.tsx`, or `.mts` edit.
 - [`workspace-packages`](skills/workspace-packages/SKILL.md): entrypoints, `exports` maps, tsconfig layout, and dependency classification in a pnpm workspace.
 - [`changeset-releases`](skills/changeset-releases/SKILL.md): why a package didn't bump or publish, and what to check before you blame a cache.
+- [`cut-release`](skills/cut-release/SKILL.md): drives the release instead: covers every changed package with a changeset, confirms the plan, runs or triggers the release for the repo's mode, and proves the version is on the registry.
 
 ### Debugging and impact
 
