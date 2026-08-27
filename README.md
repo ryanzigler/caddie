@@ -91,6 +91,7 @@ claude plugin marketplace update caddie
 - [`blast-radius`](skills/blast-radius/SKILL.md): what a change breaks outside its own diff, on a graded evidence ladder.
 - [`why`](skills/why/SKILL.md): evidence archaeology across git, tickets, error tracking, and analytics. One investigator per source.
 - [`no-comments`](skills/no-comments/SKILL.md): audits lint and type suppressions, then deletes comments that paper over bad code.
+- [`address-review`](skills/address-review/SKILL.md): gathers findings from the PR's review threads, a Codex result, or pasted text into one ledger, verifies each against the code, fixes what holds, refutes what doesn't, and replies on the PR.
 
 ### Understanding and context
 
