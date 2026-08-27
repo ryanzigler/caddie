@@ -38,3 +38,5 @@ Don't block on it. A running exploration is an unsettled prerequisite, so only t
 The session is done when the frontier is empty: every branch of the tree visited, nothing left silently assumed. Then summarize the settled design and **stop**.
 
 Do not write code, write a plan, or take any other action until the user explicitly confirms you have reached a shared understanding. Their answers to the last round are not that confirmation; ask for it and wait.
+
+Once they confirm, the settled design is the input to whatever comes next. For multi-step work, offer to hand it to a plan-writing skill if one is available in the session (such as `superpowers:writing-plans`); for a small change, offer to start building. Either way, ask; do not begin on your own.

@@ -16,7 +16,14 @@ skills/<skill-name>/
   references/       # optional, loaded on demand
   LICENSE           # required for a skill adapted from another repo
 agents/<agent-name>.md
+hooks/hooks.json      # registers the scripts beside it, via ${CLAUDE_PLUGIN_ROOT}
+hooks/<hook-name>.sh
 ```
+
+Hooks are bash scripts that read the tool payload from stdin with `jq`, exit 0 to pass, and
+exit 2 with a stderr message to block. Test one by piping a payload into it: `printf '%s'
+'{"tool_input":{"command":"git stash"}}' | hooks/destructive-git-guard.sh`. Use `printf`, not
+`echo`: zsh's `echo` turns `\n` into a real newline and the JSON stops parsing.
 
 `<skill-name>` is kebab-case and must match the `name` in its frontmatter. Skills are
 auto-discovered from `skills/` by the plugin loader. There is no index to maintain in

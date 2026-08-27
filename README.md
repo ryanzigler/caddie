@@ -101,18 +101,30 @@ claude plugin marketplace update caddie
 
 ### Before building
 
-- [`grilling`](skills/grilling/SKILL.md): asks every currently answerable decision at once, each with a recommendation, then waits.
-- [`grill-me`](skills/grill-me/SKILL.md): types `grilling` for you.
+- [`grilling`](skills/grilling/SKILL.md): asks every currently answerable decision at once, each with a recommendation, then waits. Replaces `superpowers:brainstorming`.
 - [`wizard`](skills/wizard/SKILL.md): generates a bash wizard for the steps only a human can do, like entering a secret.
+
+### Working unattended
+
+- [`autonomous-mode`](skills/autonomous-mode/SKILL.md): no questions, no unexecuted plans; decisions get made and written down, and the diff gets an adversarial Codex review before the run reports back.
 
 ### Proof and prose
 
 - [`create-verification-skill`](skills/create-verification-skill/SKILL.md): builds a project-local skill that drives the real app, and runs it once before handing it over.
-- [`writing-for-agents`](skills/writing-for-agents/SKILL.md): how to write a `SKILL.md` or `CLAUDE.md` that behaves the same way every run.
+- [`writing-for-agents`](skills/writing-for-agents/SKILL.md): how to write a `SKILL.md` or `CLAUDE.md` that behaves the same way every run. Replaces `superpowers:writing-skills`.
 - [`unslop`](skills/unslop/SKILL.md): removes AI-writing tells and restores a specific human voice.
 
 ## Agents
 
 - [`comment-sicko`](agents/comment-sicko.md): deletes comments and flags suppressions. Spawned by `no-comments`.
+- [`code-simplifier`](agents/code-simplifier.md): tidies recently written code to house style (arrow functions, named exports, no nested ternaries, `const` everywhere) without changing behavior.
+
+## Hooks
+
+Shipped in [`hooks/hooks.json`](hooks/hooks.json); each script is a few lines of bash and exits 2 with a message the model reads.
+
+- [`retired-skill-redirect.sh`](hooks/retired-skill-redirect.sh): blocks `superpowers:systematic-debugging`, `superpowers:brainstorming`, and `superpowers:writing-skills`, naming the caddie skill that replaced each. Pair it with a `permissions.deny` entry for the same skills so the block holds even if the hook is skipped.
+- [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
+- [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
