@@ -39,19 +39,16 @@ all there is.
   form's own `labels:` and `title:` prefix.
 - **Markdown templates (`*.md`).** Use the body as written, stripping the frontmatter, and
   apply its `labels:`.
-- **Nothing there.** Use the matching shape below. Every one of them ends with `Open
-  questions`.
+- **Nothing there.** Read the fallback templates and use the one matching your
+  classification:
 
-  **Bug:** `What happens` / `What should happen` / `Steps to reproduce` (or `Not yet
-  reproduced`, with what the reporter was doing) / `Where it likely lives` with file
-  citations / `Environment` with branch, commit, and version / `Open questions`.
+  ```
+  cat "${CLAUDE_PLUGIN_ROOT}/skills/file-issue/references/templates.md"
+  ```
 
-  **Feature:** `The problem` — the situation that prompted this, not the solution restated /
-  `Proposed behavior` / `Where it would live` with file citations / `Alternatives considered`,
-  only if the reporter named one / `Open questions`.
-
-  **Chore:** `What needs doing` / `Why now` / `Scope` — the files or packages affected /
-  `Open questions`.
+  Follow that file's own instructions about which sections to delete. If `CLAUDE_PLUGIN_ROOT`
+  is unset and the file cannot be read, build the issue from the headings the repo's most
+  recent issues already use, and say in your report that the templates were unreachable.
 
 If `config.yml` has `blank_issues_enabled: false` and no template fits the report, use the
 closest one rather than inventing a shape the repo has deliberately turned off.
