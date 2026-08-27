@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Diagnosis loop for bugs, test failures, crashes, and performance regressions. Use whenever the user pastes a stack trace, failing test output, CI log, or error message, or says "I'm seeing this", "this is failing", "why is this broken", "debug this", "diagnose this", or reports something throwing, hanging, returning the wrong value, or getting slower — and before proposing any fix.
+description: Diagnosis loop for bugs, test failures, crashes, broken CI, and performance regressions. Use whenever the user pastes a stack trace, failing test output, CI log, or error message, or names a failing workflow, job, build, or check without pasting its output, or says "I'm seeing this", "this is failing", "why is this broken", "fix this bug", "debug this", "diagnose this", or reports something throwing, hanging, returning the wrong value, or getting slower — and before proposing any fix. This is the debugging process skill: use it instead of any other, including a retired one you remember.
 ---
 
 # Diagnosing Bugs

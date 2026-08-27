@@ -5,21 +5,40 @@
 # the model. Any other skill passes through untouched.
 set -uo pipefail
 
+# $1 retired skill, $2 exact `skill` argument for the replacement, $3 why it wins.
+redirect() {
+  cat >&2 <<EOF
+$1 is retired in favour of $2. This is a routing decision, not a permission
+denial: the work still needs a skill, and $2 is the one that covers it.
+
+Call the Skill tool now with skill: $2
+
+$3
+
+Do not reconstruct $1's process from memory, do not paraphrase its steps, and do
+not start investigating without a skill loaded. Its replacement is not the same
+process and following the wrong one from memory is the failure this block exists
+to prevent. If the replacement turns out to be wrong for this situation, say so
+and ask — do not fall back to working unskilled.
+EOF
+  exit 2
+}
+
 payload="$(cat)"
 skill="$(printf '%s' "$payload" | jq -r '.tool_input.skill // empty' 2>/dev/null)"
 
 case "$skill" in
   superpowers:systematic-debugging)
-    echo "superpowers:systematic-debugging is retired. Use the 'diagnosing-bugs' skill instead: it gates on a real red-capable command that has already been run, minimises the repro, and requires 3-5 ranked falsifiable hypotheses before probing." >&2
-    exit 2
+    redirect "superpowers:systematic-debugging" "caddie:diagnosing-bugs" \
+      "It gates on a real red-capable command that has already been run, minimises the repro, and requires 3-5 ranked falsifiable hypotheses before probing."
     ;;
   superpowers:brainstorming)
-    echo "superpowers:brainstorming is retired. Use the 'grilling' skill instead: it asks the whole current frontier of decisions in one round, each with a recommended answer, looks facts up itself instead of asking, and stops for sign-off before any plan or code. Hand the settled design to superpowers:writing-plans afterwards if the work is multi-step." >&2
-    exit 2
+    redirect "superpowers:brainstorming" "caddie:grilling" \
+      "It asks the whole current frontier of decisions in one round, each with a recommended answer, looks facts up itself instead of asking, and stops for sign-off before any plan or code. Hand the settled design to superpowers:writing-plans afterwards if the work is multi-step."
     ;;
   superpowers:writing-skills)
-    echo "superpowers:writing-skills is retired. Use the 'writing-for-agents' skill instead for SKILL.md, CLAUDE.md, and AGENTS.md prose; use 'skill-creator' only when you need its scaffolding or eval tooling." >&2
-    exit 2
+    redirect "superpowers:writing-skills" "caddie:writing-for-agents" \
+      "It covers SKILL.md, CLAUDE.md, and AGENTS.md prose. Use skill-creator:skill-creator instead when you need its scaffolding or eval tooling."
     ;;
 esac
 
