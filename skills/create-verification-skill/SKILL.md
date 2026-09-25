@@ -9,7 +9,7 @@ disable-model-invocation: true
 Every serious project needs a scripted way to drive the real app and prove behavior:
 launch it, exercise a feature the way a user would, capture evidence. This skill generates
 that as a project-local skill at `.claude/skills/verify-<app>/`, tailored to the repo. It
-is what `superpowers:verification-before-completion` assumes already exists — without a
+is what [verification-before-completion](../verification-before-completion/SKILL.md) assumes already exists — without a
 harness, "verified" collapses back into "the tests passed".
 
 Write the generated output for the next agent, not for a human. It will be read cold,

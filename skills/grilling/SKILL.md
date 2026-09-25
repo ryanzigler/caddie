@@ -1,11 +1,29 @@
 ---
 name: grilling
-description: Interview the user round by round until you both share the same understanding of a plan, spec, or design, then stop and wait for their sign-off. Use before building from a handed-over spec, ticket, PRD, or feature request; when the user asks to be asked clarifying questions first; when they want a plan or decision stress-tested; or on any 'grill' phrasing.
+description: Interview the user to resolve a plan, design, or decision. Use when asked to grill, interview, or stress-test their thinking, or when material requirements need clarification. Route engineering interviews that should capture terminology and decisions to grill-with-docs.
 ---
 
 # Grilling
 
 Interview the user until you reach a shared understanding. Map the work as a **design tree**: every decision branches into the decisions that hang off it.
+
+## Choose the questions for the work
+
+For engineering work, establish users, observable behavior, scope, constraints, failure
+cases, and acceptance criteria. Then probe ownership, interfaces, compatibility,
+migration, and testability where relevant. Inspect the code to answer factual questions.
+When the interview should maintain a glossary and ADRs, use
+[grill-with-docs](../grill-with-docs/SKILL.md); it adds documentation to this process.
+
+For non-engineering work, probe the goal, audience, incentives, resources, constraints,
+tradeoffs, and evidence of success. Use the domain's own language; avoid imposing code
+architecture, test plans, or ADRs on a career, writing, or business decision.
+
+For mixed work, settle the outcome first, then separate product or business decisions
+from technical choices. Ask only questions that can change the decision or the result;
+a straightforward authorized edit does not need a design interview.
+
+## Rounds
 
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round. Number each question and give your recommended answer. Then wait for the user's answers before the next round.
 
@@ -29,14 +47,22 @@ Each round of answers reshapes the tree: settled decisions push the frontier out
 
 ## Finding facts is your job, never the user's
 
-The _decisions_ are the user's. The _facts_ are yours. When a frontier question needs a fact from the environment — what a file contains, how a package is wired, which config already exists, what an API actually returns — dispatch a `general-purpose` subagent to find it. Never ask the user for anything you could look up.
+The _decisions_ are the user's. The _facts_ are yours. Read the relevant files and
+inspect the environment before asking a factual question. For substantial independent
+lookups, delegate when tools are available; otherwise investigate directly. Never ask
+the user for information you can look up.
 
-Don't block on it. A running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the subagent to report; ask the rest of the frontier now. Launch independent lookups in parallel in a single message.
+A running exploration is an unsettled prerequisite, so only the questions downstream
+of it wait for its result; ask the rest of the frontier now.
 
 ## Ending
 
-The session is done when the frontier is empty: every branch of the tree visited, nothing left silently assumed. Then summarize the settled design and **stop**.
+The interview is done when every material decision is settled or explicitly deferred
+with its consequence recorded. Summarize the agreement and any remaining assumptions.
+For an interview-only request, ask whether this captures the user's intent and wait;
+confirmation of understanding alone does not authorize implementation.
 
-Do not write code, write a plan, or take any other action until the user explicitly confirms you have reached a shared understanding. Their answers to the last round are not that confirmation; ask for it and wait.
-
-Once they confirm, the settled design is the input to whatever comes next. For multi-step work, offer to hand it to a plan-writing skill if one is available in the session (such as `superpowers:writing-plans`); for a small change, offer to start building. Either way, ask; do not begin on your own.
+When implementation was already requested, preserve that authorization. Continue with
+[writing-plans](../writing-plans/SKILL.md) for substantial work or directly with a small
+change once the blocking decisions are answered. Ask for a new decision only when the
+answers materially change the authorized scope.

@@ -103,9 +103,21 @@ claude plugin marketplace update caddie
 
 ### Before building
 
-- [`grilling`](skills/grilling/SKILL.md): asks every currently answerable decision at once, each with a recommendation, then waits. Replaces `superpowers:brainstorming`.
+- [`grilling`](skills/grilling/SKILL.md): asks every currently answerable decision at once, each with a recommendation, then waits. Uses different questions for engineering and non-engineering decisions.
+- [`grill-with-docs`](skills/grill-with-docs/SKILL.md): engineering interviews that record agreed terminology and consequential decisions as they emerge.
+- [`domain-modeling`](skills/domain-modeling/SKILL.md): maintains domain glossaries and ADRs without mixing proposals with accepted decisions.
+- [`writing-plans`](skills/writing-plans/SKILL.md): turns settled requirements into tasks with concrete interfaces and verification.
 - [`wizard`](skills/wizard/SKILL.md): generates a bash wizard for the steps only a human can do, like entering a secret.
 - [`file-issue`](skills/file-issue/SKILL.md): captures a bug or feature you mentioned in passing as a formatted GitHub issue, filed by a background agent so the current work never stops.
+
+### Implementation and review
+
+- [`executing-plans`](skills/executing-plans/SKILL.md): implements a plan, records progress, reviews the changes, and verifies the result.
+- [`subagent-driven-development`](skills/subagent-driven-development/SKILL.md): coordinates fresh implementers, task reviews, durable progress, and a final integration review.
+- [`finishing-a-development-branch`](skills/finishing-a-development-branch/SKILL.md): carries out authorized integration or leaves a verified handoff, preserving host-managed workspaces.
+- [`tdd`](skills/tdd/SKILL.md): tests behavior through public interfaces, one red-green-refactor slice at a time.
+- [`code-review`](skills/code-review/SKILL.md): checks correctness and requirement coverage with an independent reviewer.
+- [`verification-before-completion`](skills/verification-before-completion/SKILL.md): matches completion claims to current evidence.
 
 ### Working unattended
 
@@ -114,10 +126,12 @@ claude plugin marketplace update caddie
 ### Proof and prose
 
 - [`create-verification-skill`](skills/create-verification-skill/SKILL.md): builds a project-local skill that drives the real app, and runs it once before handing it over.
-- [`writing-for-agents`](skills/writing-for-agents/SKILL.md): how to write a `SKILL.md` or `CLAUDE.md` that behaves the same way every run. Replaces `superpowers:writing-skills`.
+- [`writing-for-agents`](skills/writing-for-agents/SKILL.md): how to write a `SKILL.md` or `CLAUDE.md` that behaves the same way every run.
 - [`unslop`](skills/unslop/SKILL.md): removes AI-writing tells and restores a specific human voice.
 
 ## Agents
+
+- [`code-reviewer`](agents/code-reviewer.md): reads the requested diff, requirements, and standards; reports concrete defects without editing or posting. Spawned by `code-review`.
 
 - [`comment-sicko`](agents/comment-sicko.md): deletes comments and flags suppressions. Spawned by `no-comments`.
 - [`issue-filer`](agents/issue-filer.md): formats a rough report into a real GitHub issue, checks for duplicates, obeys the repo's own templates, and creates it with `gh`. Spawned by `file-issue`.
@@ -127,8 +141,19 @@ claude plugin marketplace update caddie
 
 Shipped in [`hooks/hooks.json`](hooks/hooks.json); each script is a few lines of bash and exits 2 with a message the model reads.
 
-- [`retired-skill-redirect.sh`](hooks/retired-skill-redirect.sh): blocks `superpowers:systematic-debugging`, `superpowers:brainstorming`, and `superpowers:writing-skills`, naming the caddie skill that replaced each. Pair it with a `permissions.deny` entry for the same skills so the block holds even if the hook is skipped.
 - [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
+
+## Sources and migration
+
+`grilling`, `grill-with-docs`, `domain-modeling`, `wizard`, and `tdd` are adapted from
+[Matt Pocock's skills](https://github.com/mattpocock/skills). `writing-plans`,
+`executing-plans`, `subagent-driven-development`, `finishing-a-development-branch`,
+and `verification-before-completion` adapt selected workflows from
+[Superpowers](https://github.com/obra/superpowers). `code-review` combines ideas from
+both. Their licenses live beside the adapted skills.
+
+Caddie does not require Superpowers. The [skill comparison and migration notes](docs/skill-gap-review.md)
+map replacements, explain what was retained, and list remaining candidates.
