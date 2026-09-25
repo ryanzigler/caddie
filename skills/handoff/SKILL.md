@@ -4,6 +4,8 @@ description: Compact this conversation into a handoff document in the repo's doc
 disable-model-invocation: true
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 Write a handoff document summarising the current conversation so a fresh agent can continue the
 work.
 
@@ -17,8 +19,9 @@ Include:
 - **Next steps**: the immediate next action, stated concretely enough to start on.
 - **Landmines**: what was already tried and failed, decisions taken and why, anything
   surprising about this codebase that the next session would otherwise rediscover.
-- **Suggested skills**: which skills the next agent should invoke with the Skill tool, and for
-  what.
+- **Suggested skills**: which skills the next agent should use, and for what. In Claude Code,
+  invoke them with the Skill tool; in Codex, use the installed skill loader or read the
+  installed `SKILL.md`.
 
 Write pointers, not copies. Anything already captured in another artifact — a spec, a plan, an
 issue, a PR, a commit, a diff — is referenced by path, number, or URL rather than summarised

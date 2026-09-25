@@ -5,6 +5,10 @@ description: Review a PR, branch, or working diff for correctness and requiremen
 
 # Code review
 
+In Codex, read [the host adapter](../../references/codex.md) for bundled reviewer
+and agent dispatch; the Claude agent name is not a registered Codex role.
+
+
 Resolve the requested scope before reviewing. For a working-tree-only request, use
 `HEAD` as the committed baseline and include staged, unstaged, and relevant untracked
 files; exclude already committed branch changes. For a branch or PR review, honor a

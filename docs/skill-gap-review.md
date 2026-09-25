@@ -16,7 +16,7 @@ Added `grill-with-docs` and its reusable `domain-modeling` discipline. The forme
 
 Added `writing-plans`, `executing-plans`, `subagent-driven-development`, `finishing-a-development-branch`, `tdd`, `code-review`, `verification-before-completion`, and a read-only `code-reviewer` agent. These are small local adaptations, not a vendored Superpowers framework. Their cross-references resolve inside Caddie. They preserve concrete interfaces, one behavior per test cycle, independent review, and evidence-based handoff. They omit mandatory worktrees, per-task commits, repeated permission requests, fixed numbers of review cycles, and the always-on bootstrap.
 
-Removed the retired-skill redirect hook and its registration. With Superpowers removed, there is no need to intercept three of its skills while the rest remain callable. Replaced the two remaining runtime references to its planning and verification skills. Historical names remain in this migration document only.
+Removed the Superpowers cases from the retired-skill redirect hook. During integration with newer main, preserved its new writing-skill redirects and registration. With Superpowers removed, there is no need to intercept three of its skills while the rest remain callable. Replaced the two remaining runtime references to its planning and verification skills. Historical names remain in this migration document only.
 
 ## Matt Pocock comparison
 
@@ -122,7 +122,7 @@ Confirm a fresh session exposes Caddie's planning, interview, review, and verifi
 Claude plugin validation passed for the marketplace (strict), plugin manifest, skills,
 and agents. The plugin manifest retains the existing warning that root `CLAUDE.md`
 is contributor guidance rather than shipped plugin context. Local name/link checks
-passed for all 35 skill and agent entry points; both manifest versions are 0.4.0.
+passed for all 37 skill and agent entry points; all three manifest versions are 0.6.0.
 The wizard template passed `bash -n`, and `git diff --check` passed.
 
 An independent instruction walkthrough covered a career interview, an engineering
@@ -136,4 +136,15 @@ Claude session.
 
 The skill-creator Python validator could not run because the local interpreter lacks
 PyYAML; Claude's component validator supplied the frontmatter/package checks instead.
-No plugin installation, disabling, publishing, or live-session reload was performed.
+No persistent plugin installation, disabling, publishing, or live-session reload was performed.
+
+## Main-branch integration
+
+Preserved the newer main branch's Codex packaging, host adapters, writing-profile
+skills, and writing-skill redirects. Synchronized the Claude manifest, Codex manifest,
+and Claude marketplace at 0.6.0. Compatibility tests cover retained redirects and
+the removal of Superpowers redirect behavior.
+
+The integrated tree passed all 16 compatibility tests. A temporary Codex installation
+and loader smoke check discovered all 33 skills without errors; normal installed
+plugins and settings remained untouched. All 37 skill/agent entry-point links resolved.

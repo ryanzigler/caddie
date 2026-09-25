@@ -3,6 +3,8 @@ name: grilling
 description: Interview the user to resolve a plan, design, or decision. Use when asked to grill, interview, or stress-test their thinking, or when material requirements need clarification. Route engineering interviews that should capture terminology and decisions to grill-with-docs.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Grilling
 
 Interview the user until you reach a shared understanding. Map the work as a **design tree**: every decision branches into the decisions that hang off it.

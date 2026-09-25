@@ -1,7 +1,9 @@
 ---
 name: why
-description: Reconstruct the motivation and history behind code, cited and confidence-calibrated. Use for "why does X work this way", "why did we pick Y over Z", design rationale, rejected alternatives, "when did this regress and what changed", postmortem archaeology, and "where did this number come from". Discovers which evidence sources are actually connected in this environment (source control, issue tracker, long-form docs, team chat, infrastructure observability, error tracking, product analytics), runs one investigator per connected category in parallel, and returns a cited answer with an explicit coverage map of what was searched, what came back empty, and what could not be searched at all. Use the how skill for runtime behavior, and diagnosing-bugs for a failure that is happening now: this skill reconstructs history, it does not debug.
+description: "Reconstruct the motivation and history behind code, cited and confidence-calibrated. Use for \"why does X work this way\", \"why did we pick Y over Z\", design rationale, rejected alternatives, \"when did this regress and what changed\", postmortem archaeology, and \"where did this number come from\". Discovers which evidence sources are actually connected in this environment (source control, issue tracker, long-form docs, team chat, infrastructure observability, error tracking, product analytics), runs one investigator per connected category in parallel, and returns a cited answer with an explicit coverage map of what was searched, what came back empty, and what could not be searched at all. Use the how skill for runtime behavior, and diagnosing-bugs for a failure that is happening now: this skill reconstructs history, it does not debug."
 ---
+
+In Codex, first read [the host adapter](../../references/codex.md).
 
 # Why
 
@@ -47,8 +49,8 @@ Pass the anchor to every investigator so none of them rediscovers it.
 
 Do not assume. Determine what is actually reachable before deciding what to spawn.
 
-1. **Scan your own tool surface.** Any tool named `mcp__<server>__<tool>` is a connected MCP server. Deferred MCP tools appear by name in system-reminders without schemas; that still tells you the server exists. Investigators load their own schemas with `ToolSearch`, so do not load them here.
-2. **Run `claude mcp list`.** It prints every configured server as `Connected` or `Needs authentication`. This distinction is load-bearing: `Connected` means searchable, `Needs authentication` means the category is a **gap** and the coverage map should say so and mention that `/mcp` authenticates it.
+1. **Scan your own tool surface.** In Codex, follow the host adapter for discovery and authentication checks. The following `ToolSearch` and CLI details apply to Claude Code. Any tool named `mcp__<server>__<tool>` is a connected MCP server. Deferred MCP tools appear by name in system-reminders without schemas; that still tells you the server exists. Investigators load their own schemas with `ToolSearch`, so do not load them here.
+2. **In Claude Code, run `claude mcp list`.** It prints every configured server as `Connected` or `Needs authentication`. This distinction is load-bearing: `Connected` means searchable, `Needs authentication` means the category is a **gap** and the coverage map should say so and mention that `/mcp` authenticates it.
 3. **Check CLI-backed sources**, since not every category arrives as an MCP. `command -v` for `git` and `gh` (source control, expected present), `sentry-cli` (error tracking), `bq` (product analytics), and whatever deploy tooling the repo uses (infrastructure observability). A working CLI counts as connected.
 4. **Map each connected source to exactly one category**, classifying from its name, instructions, and tool names. Ambiguous cases get noted in the coverage map. Two sources in one category means one investigator owns both.
 

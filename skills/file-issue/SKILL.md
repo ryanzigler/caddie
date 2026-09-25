@@ -3,6 +3,8 @@ name: file-issue
 description: Capture a bug or feature idea as a properly formatted GitHub issue without stopping what you are doing. Use when the user reports something in passing rather than asking for it now — "I just thought of a new feature", "here's a bug I noticed", "we should add X someday", "make a note that Y is broken", "file an issue for this", "open a ticket for that", "TODO for later". A background agent formats it and creates it with `gh`; the current work is not interrupted.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # File an issue
 
 The user just said something out loud while doing something else. It costs them nothing to
@@ -39,8 +41,9 @@ agent that was not here.
 
 ## 2. Dispatch in the background
 
-One agent, `subagent_type: "issue-filer"`, with the packet as its prompt. Do not restate the
-agent's rules; it has them.
+In Claude Code, one agent, `subagent_type: "issue-filer"`, with the packet as its prompt.
+Do not restate the agent's rules; it has them. In Codex, dispatch through the host adapter
+with the shared agent body, the packet, and the absolute fallback-template path.
 
 Subagents run in the background and notify on completion, so this does not block. Dispatch it
 in the same message as the next step of whatever you were doing, and keep going.

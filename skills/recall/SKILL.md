@@ -1,8 +1,10 @@
 ---
 name: recall
-description: "Rebuild working context from prior Claude Code sessions, live git/gh state, and the shared record (tickets, PRs, prod errors), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', typically right after a /clear."
+description: "Rebuild working context from prior Claude Code or Codex sessions, live git/gh state, and the shared record (tickets, PRs, prod errors), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', typically right after a /clear."
 disable-model-invocation: true
 ---
+
+In Codex, first read [the host adapter](../../references/codex.md).
 
 # Recall
 
@@ -31,13 +33,17 @@ alone.
    project (default the active one; never read another project's transcripts unasked).
    State the scope back before searching. Never quietly turn "all" into "recent N".
 
-2. **Build the triage index yourself.** Run the index command in
-   [references/transcripts.md](references/transcripts.md) in the main thread. Titles plus
-   mtimes plus prompt counts are cheap and tell you which sessions are worth opening.
+2. **Build the triage index yourself.** Default to the current host's session history.
+   An explicit request for Claude or Codex history selects that source regardless of
+   the current host; search both only when requested. For Claude Code, use
+   [references/transcripts.md](references/transcripts.md). For Codex, use
+   [references/codex-transcripts.md](references/codex-transcripts.md). Run the selected
+   index in the main thread. Titles or first prompts, mtimes, and prompt counts tell
+   you which sessions are worth opening. Report unavailable history as a gap.
 
 3. **Fan out over the candidates.** Spawn parallel `general-purpose` subagents, each
    taking a slice of the candidate sessions. Give every subagent
-   `references/transcripts.md` by path and require it to use the digest command rather
+   the selected transcript reference by absolute path and require its digest command rather
    than reading files whole. Order by mtime, never by UUID. Skip the current session and
    obvious noise (subagent, eval, and throwaway sessions). For one or two candidates, skip
    the fan-out and digest them directly.
@@ -85,7 +91,7 @@ detail goes below, or gets cut.
 
 An adjacent feature or ticket stays out unless it blocks this one. When the capsule and
 thread lines outgrow a screen, cut detail before cutting threads. Write the brief through
-the **unslop** skill. Cite session findings by UUID and shared-record findings by source
+the **ryan-voice-guide** skill. Cite session findings by UUID and shared-record findings by source
 (PR #, ticket ID, Slack permalink, Sentry issue). Sanitize private context before any
 output that leaves the machine.
 

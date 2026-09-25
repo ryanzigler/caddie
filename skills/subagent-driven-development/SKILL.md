@@ -5,6 +5,10 @@ description: Execute a substantial plan using a fresh implementer and independen
 
 # Subagent-driven development
 
+In Codex, read [the host adapter](../../references/codex.md) for bundled reviewer
+and agent dispatch; the Claude agent name is not a registered Codex role.
+
+
 Coordinate implementation, task review, and final integration review. Keep decisions
 and progress in durable files so a resumed session does not repeat completed work.
 Use the host's available agent tools and respect its delegation limits. If delegation

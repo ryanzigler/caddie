@@ -3,6 +3,8 @@ name: writing-for-agents
 description: How to write prose that an agent reads and acts on — the levers that make a document behave the same way every run. Use when creating or editing a SKILL.md, CLAUDE.md, or AGENTS.md, when writing or sharpening a skill description, and when deciding what belongs inline versus behind a pointer.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Writing for Agents
 
 Reference for writing any document an agent consumes: a skill, an `AGENTS.md` or `CLAUDE.md`, a
