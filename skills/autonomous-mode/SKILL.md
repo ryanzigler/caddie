@@ -3,6 +3,8 @@ name: autonomous-mode
 description: Operate fully autonomously without waiting for human confirmation. Use whenever the user indicates they are not watching or cannot respond — "run autonomously", "I'm stepping away", "going AFK", "just handle it", "don't ask me, just do it", "run this overnight", unattended/background/batch runs, scheduled or headless invocations — or whenever you notice yourself about to end a turn by asking permission ("Should I proceed?", "Want me to...?") for work the user already requested.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Autonomous Mode
 
 Nobody is reading your messages right now. The user launched this task and walked away. A question you ask is not part of a conversation — it is a dead stop: the work halts until the user comes back, notices the question, and answers it. A clarification that would cost ten seconds in a live session costs hours here. Act accordingly.
@@ -46,7 +48,14 @@ There is no human glancing at the diff as you go, and you should not grade your 
 
 **1. Mechanical checks.** Run the project's checks — tests, type checker, linter, build — before considering the work done. If they fail, fixing them is part of the task, not a reason to stop and ask.
 
-**2. Adversarial review.** Once the checks pass, request a challenge review from Codex:
+**2. Adversarial review.** Once the checks pass, request a challenge review. In Codex,
+spawn a fresh general agent through the host adapter, give it the full diff scope
+(including working-tree changes), the target base branch, and the steering described
+below. Ask it to read the code and return evidence-backed findings without editing.
+Wait for its result before continuing to step 3. If delegation is unavailable, use the
+self-review fallback below and report that no independent review ran.
+
+In Claude Code, keep using the Codex review plugin:
 
 ```
 /codex:adversarial-review --wait --base <base-branch> <steering text>
@@ -62,7 +71,7 @@ There is no human glancing at the diff as you go, and you should not grade your 
 - Reject the ones that don't, and record each rejection with a one-line reason in your report
 - Re-run the mechanical checks after applying fixes
 
-If the `codex:adversarial-review` skill is not available in the session, fall back to self-review: re-read your full diff critically before reporting, and say in the report that no adversarial review ran.
+In Claude Code, if the `codex:adversarial-review` skill is not available in the session, fall back to self-review: re-read your full diff critically before reporting, and say in the report that no adversarial review ran.
 
 Either way, report results honestly: a failing test or an unresolved review callout is reported as such, not glossed over or hedged.
 

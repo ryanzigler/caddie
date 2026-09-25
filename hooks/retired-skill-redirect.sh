@@ -45,6 +45,18 @@ case "$skill" in
     redirect "superpowers:writing-skills" "caddie:writing-for-agents" \
       "It covers SKILL.md, CLAUDE.md, and AGENTS.md prose. Use skill-creator:skill-creator instead when you need its scaffolding or eval tooling."
     ;;
+  caddie:unslop)
+    redirect "caddie:unslop" "caddie:ryan-voice-guide" \
+      "It runs the same AI-tells pass from the same pattern catalog, then applies Ryan's calibrated voice profile, so the result sounds like him rather than like a generic human."
+    ;;
+  anthropic-skills:humanize-writing)
+    redirect "anthropic-skills:humanize-writing" "caddie:ryan-voice-guide" \
+      "It strips the same AI tells and then applies Ryan's calibrated voice profile. Humanizing toward a generic human is the wrong target when the text is published as Ryan."
+    ;;
+  anthropic-skills:cro-metrics-writing)
+    redirect "anthropic-skills:cro-metrics-writing" "caddie:ryan-voice-guide" \
+      "Its client-facing register owns structure and length as well as wording, learned from Ryan's own client documents, so the house rules are not lost. If the user explicitly asked for cro-metrics-writing by name, say so and ask before proceeding."
+    ;;
 esac
 
 exit 0

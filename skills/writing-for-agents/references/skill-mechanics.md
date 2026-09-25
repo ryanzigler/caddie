@@ -6,6 +6,18 @@ writing it is the universal reference in `SKILL.md`.
 
 ## Invocation
 
+The frontmatter flag below is Claude Code's control. For the same explicit-only
+behavior in Codex, also add `agents/openai.yaml` inside that skill directory with:
+
+```yaml
+policy:
+  allow_implicit_invocation: false
+```
+
+For a model-invoked skill, omit this policy or set it to `true`. Keep both hosts'
+settings in sync. Codex explicit invocation uses `$` or `/skills`; Claude slash
+commands keep their existing spelling.
+
 Two choices, trading the two loads:
 
 - A **model-invoked** skill keeps a `description`, so the agent can fire it autonomously and

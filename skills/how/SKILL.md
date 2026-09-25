@@ -3,6 +3,8 @@ name: how
 description: Explain how a subsystem works, trace a runtime flow, or settle a placement question. Use for "how does X work", "walk me through what happens when a user does Y", a code walkthrough before changing something, onboarding onto an unfamiliar area, and package-ownership or layering questions such as "where should this live", "which package owns this", "is this the right layer", "do these need their own tsconfig", "should this be its own entrypoint or its own package". Can also critique a subsystem's architecture when asked for problems or improvements. Use the why skill for motivation and history.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # How
 
 Answer "how does X work?" at the level of a senior engineer onboarding onto a subsystem. Produce a working mental model, not annotated source code.

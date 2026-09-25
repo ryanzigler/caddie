@@ -4,6 +4,8 @@ description: Restate the last message in plain human language, with no jargon.
 disable-model-invocation: true
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Bro
 
 Restate your last message. Stop using jargon and speak coherently. Say it more simply and concisely, like one human talking to another.

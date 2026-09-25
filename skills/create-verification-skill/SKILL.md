@@ -8,7 +8,9 @@ disable-model-invocation: true
 
 Every serious project needs a scripted way to drive the real app and prove behavior:
 launch it, exercise a feature the way a user would, capture evidence. This skill generates
-that as a project-local skill at `.claude/skills/verify-<app>/`, tailored to the repo. It
+that as a project-local skill, tailored to the repo. In Claude Code, its directory is
+`.claude/skills/verify-<app>/`. In Codex, use `.agents/skills/verify-<app>/`. Call this
+directory `<skill-dir>` below; an explicit user-supplied destination takes precedence. It
 is what `superpowers:verification-before-completion` assumes already exists — without a
 harness, "verified" collapses back into "the tests passed".
 
@@ -42,7 +44,7 @@ and remove it in cleanup.
 
 ## 2. Generate the skill
 
-Write `.claude/skills/verify-<app>/SKILL.md` with frontmatter of exactly `name:
+Write `<skill-dir>/SKILL.md` with frontmatter of exactly `name:
 verify-<app>` and a `description` naming the app, the surface, and when to reach for it.
 Without frontmatter the skill never registers. Reach for the `skill-creator` skill if you
 need the authoring mechanics.
@@ -75,7 +77,7 @@ placeholders left:
 
 ## 3. Seed the feature map
 
-Create `.claude/skills/verify-<app>/features/README.md` plus one file per user-facing
+Create `<skill-dir>/features/README.md` plus one file per user-facing
 feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, or
 docs). Follow the shape in
 [`references/feature-map-example/`](references/feature-map-example/): a README index and

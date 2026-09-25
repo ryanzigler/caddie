@@ -40,14 +40,16 @@ all there is.
 - **Markdown templates (`*.md`).** Use the body as written, stripping the frontmatter, and
   apply its `labels:`.
 - **Nothing there.** Read the fallback templates and use the one matching your
-  classification:
+  classification. In Codex, read the absolute fallback-template path supplied by the
+  parent, or resolve [the templates](../skills/file-issue/references/templates.md) relative
+  to this agent file. In Claude Code, keep using:
 
   ```
   cat "${CLAUDE_PLUGIN_ROOT}/skills/file-issue/references/templates.md"
   ```
 
-  Follow that file's own instructions about which sections to delete. If `CLAUDE_PLUGIN_ROOT`
-  is unset and the file cannot be read, build the issue from the headings the repo's most
+  Follow that file's own instructions about which sections to delete. If the template
+  cannot be read through the current host's path, build the issue from the headings the repo's most
   recent issues already use, and say in your report that the templates were unreachable.
 
 If `config.yml` has `blank_issues_enabled: false` and no template fits the report, use the

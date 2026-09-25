@@ -3,6 +3,8 @@ name: grilling
 description: Interview the user round by round until you both share the same understanding of a plan, spec, or design, then stop and wait for their sign-off. Use before building from a handed-over spec, ticket, PRD, or feature request; when the user asks to be asked clarifying questions first; when they want a plan or decision stress-tested; or on any 'grill' phrasing.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Grilling
 
 Interview the user until you reach a shared understanding. Map the work as a **design tree**: every decision branches into the decisions that hang off it.

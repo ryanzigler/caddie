@@ -3,6 +3,8 @@ name: blast-radius
 description: "Find what a change could break outside its own diff, then prove the one fact it's safe because of by running real code instead of writing it up. Use whenever the impact beyond the diff is in question — 'what could this break', 'blast radius of X', 'is this safe to merge', 'what else touches this', 'will this break the other packages' — or when changing a shared package, an exported API, a schema, or a wire format."
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Blast radius
 
 Find what a change breaks somewhere else, before it ships.
@@ -81,7 +83,7 @@ it, go write it.
 - **Before you merge.** The cheapest test or repro that catches the real bug, including the
   script you wrote.
 
-Write it through `unslop`, cite real code, and strip anything private before it goes
+Write it through `ryan-voice-guide`, cite real code, and strip anything private before it goes
 anywhere public.
 
 **Reply:** the writeup above, with the one safety fact either proven at rung 4 or higher,

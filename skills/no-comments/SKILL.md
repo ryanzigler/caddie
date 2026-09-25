@@ -4,6 +4,8 @@ description: Audit a diff for lint and type-checker suppressions and for comment
 disable-model-invocation: true
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # No comments
 
 A suppression comment and an explanatory comment are usually the same bug wearing different clothes: the code is not obvious, or it is not correct, and prose was cheaper than fixing it. Delete the prose, fix the code.
@@ -16,7 +18,7 @@ You wrote most of the comments in this diff, so you will defend them. Defer to t
 
 ## 1. Run the audit
 
-Spawn a subagent with `subagent_type: "comment-sicko"` and pass it the scope. Do not restate its rules. It reports deletions, `MUST KILL` flags on the exact symbols that need reshaping, and skips.
+In Claude Code, spawn a subagent with `subagent_type: "comment-sicko"` and pass it the scope. Do not restate its rules. In Codex, use the host adapter to supply the shared agent body and scope to a fresh subagent. It reports deletions, `MUST KILL` flags on the exact symbols that need reshaping, and skips.
 
 ## 2. Audit the suppressions first
 

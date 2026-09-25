@@ -3,6 +3,8 @@ name: teach
 description: Explain a change, subsystem, or concept plainly until the person actually understands it, by running the `how` and `why` skills and weaving their findings into one account. Use for "teach me this", "help me understand X", "walk me through this subsystem", "explain this PR to me", or getting oriented in unfamiliar code. Not for debugging a failure and not for a one-line factual answer.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Teach
 
 Explain what a thing is, how it works, and why it's built that way, in one plain account at the person's pace. The goal is that they understand it, not that you change anything. Change nothing unless they ask.

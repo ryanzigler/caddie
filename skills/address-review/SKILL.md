@@ -3,6 +3,8 @@ name: address-review
 description: Triage review findings from any source — a PR's review comments and threads, a Codex review or adversarial-review result, or text the user pasted — verify each one against the code, fix what holds, push back on what doesn't, and reply on the PR. Use for "address the review", "Claude called this out on PR review", "Address Codex's findings", "fix what the reviewer flagged", "respond to the PR comments", or whenever review output is pasted or a PR has unresolved review threads.
 ---
 
+In Codex, first read [the host adapter](../../references/codex.md).
+
 # Address review
 
 Review output is a set of claims about the code. Treat every claim, whoever made it, the same
@@ -17,10 +19,13 @@ reported by Codex and the PR bot in different words.
 
 - **Pasted text or the conversation.** Findings in `$ARGUMENTS` or the last message, and a
   Codex `--wait` result already printed above.
-- **Codex job store.** `node "<codex-plugin>/scripts/codex-companion.mjs" result --json`
+- **Claude-hosted Codex job store, when installed.** `node "<codex-plugin>/scripts/codex-companion.mjs" result --json`
   from the repo root, where `<codex-plugin>` is the newest directory under
   `~/.claude/plugins/cache/openai-codex/codex/`. "No finished Codex jobs" means the source is
-  empty, not missing.
+  empty, not missing. If the companion is absent, mark that source unavailable. In
+  Codex, also collect review results already in the conversation or in an explicitly
+  supplied artifact; do not assume the Claude companion is installed or launch a new
+  review just to fill an empty source.
 - **The PR.** `gh pr view --json number,url,headRefOid,baseRefName` finds the PR for the
   current branch (or take the number from `$ARGUMENTS`). Then read the review bodies, the
   unresolved inline threads, and the issue comments per

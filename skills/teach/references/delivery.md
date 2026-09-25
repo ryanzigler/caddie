@@ -2,7 +2,7 @@
 
 ## Voice
 
-Write every response through the `unslop` skill, in plain spoken English, the way you'd explain it to a colleague at the next desk.
+Write every response through the `ryan-voice-guide` skill, in plain spoken English, the way you'd explain it to a colleague at the next desk.
 
 Be tight, not terse. Cut filler and hedging and keep the part that makes it click. Padding is the enemy, not ideas.
 
