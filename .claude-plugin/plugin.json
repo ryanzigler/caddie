@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "caddie",
   "displayName": "Caddie",
   "version": "0.7.0",
