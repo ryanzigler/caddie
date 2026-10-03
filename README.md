@@ -2,7 +2,7 @@
 
 Reads the green, hands you the right club.
 
-Personal engineering skills, agents, and hooks for Claude Code and Codex, packaged as one plugin.
+Personal engineering skills, agents, hooks, and mods for Claude Code and Codex, packaged as one plugin.
 
 ## Installation Options
 
@@ -183,6 +183,12 @@ Shipped in [`hooks/hooks.json`](hooks/hooks.json); each script is a few lines of
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
+
+## Mods
+
+Claude Code function hooks, registered as `modules` in the same [`hooks/hooks.json`](hooks/hooks.json). They draw in the terminal and in Claude Desktop's Code tab. Function hooks are early access: if a mod does not appear, add `"CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1"` to the `env` block of `~/.claude/settings.json` and start a new session.
+
+- [`quota-bar`](hooks/quota-bar.tsx): a band above the prompt showing the context window by `/context` category and each plan usage limit with a forecast to its reset. `/quota` toggles it. Its state contract is [`types/index.d.ts`](types/index.d.ts) and its tests are [`tests/quota-bar.test.tsx`](tests/quota-bar.test.tsx), run with `claude plugin test .`.
 
 ## Sources and migration
 
