@@ -1,6 +1,6 @@
 {
   "name": "caddie",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
   "author": {
     "name": "Ryan Zigler"
@@ -10,6 +10,7 @@
   "license": "MIT",
   "keywords": ["skills", "engineering", "workflows"],
   "skills": "./skills/",
+  "apps": "./.app.json",
   "interface": {
     "displayName": "Caddie",
     "shortDescription": "Personal engineering skills and workflows",
@@ -18,6 +19,12 @@
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
     "websiteURL": "https://github.com/ryanzigler/caddie",
-    "defaultPrompt": ["Use Caddie to explain how this project works."]
+    "logo": "./assets/caddie-mark.png",
+    "logoDark": "./assets/caddie-mark-dark.png",
+    "brandColor": "#246B4F",
+    "composerIcon": "./assets/caddie-mark.png",
+    "defaultPrompt": [
+      "Use the Caddie \"how\" skill to explain how this project works."
+    ]
   }
 }

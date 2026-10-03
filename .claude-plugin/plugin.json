@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "caddie",
   "displayName": "Caddie",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
   "author": {
     "name": "Ryan Zigler"
@@ -10,5 +10,6 @@
   "homepage": "https://github.com/ryanzigler/caddie",
   "repository": "https://github.com/ryanzigler/caddie",
   "license": "MIT",
-  "keywords": ["skills", "engineering", "workflows"]
+  "keywords": ["skills", "engineering", "workflows"],
+  "icon": "./assets/caddie-mark.png"
 }
