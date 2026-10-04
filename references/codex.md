@@ -41,6 +41,7 @@ roles to translate, not Codex tool arguments:
 | `comment-sicko` | Read [the shared agent](../agents/comment-sicko.md), then pass its full Markdown body and the scoped task to a general agent. |
 | `issue-filer` | Read [the shared agent](../agents/issue-filer.md), then pass its full Markdown body and the context packet to a general agent. |
 | `code-reviewer` | Read [the shared agent](../agents/code-reviewer.md), then pass its full Markdown body and the scoped review to a general agent. |
+| `caddie-agent` | Read [the shared agent](../agents/caddie-agent.md), then pass its full Markdown body, the absolute [mode path](../skills/caddie-mode/SKILL.md), and the scoped task to a general agent. |
 | `code-simplifier` | Read [the shared agent](../agents/code-simplifier.md), then pass its full Markdown body and the scoped task to a general agent. |
 
 For bundled agents, strip only YAML frontmatter; preserve the complete instructions.

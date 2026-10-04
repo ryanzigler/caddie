@@ -110,7 +110,29 @@ claude plugin install caddie@caddie
 claude plugin marketplace update caddie
 ```
 
+## Start with a mode
+
+Use `caddie-mode` for an engineering task. It picks a playbook, routes to Caddie's
+existing skills, and carries the work through review and verification. It stays
+active within that conversation until you opt out. New conversations need a new
+invocation.
+
+In Claude Code, run `/caddie:caddie-mode <task>`. In Codex, select
+`$caddie:caddie-mode` or use `/skills`, then supply the task.
+
+Use `automate-me` to create your own `<handle>-mode`. It combines project-scoped
+history with a short interview, or updates an existing mode from what's changed.
+Missing history is fine; the interview can supply the rules. Personal modes default
+to explicit invocation and project-local placement: `.claude/skills/` in Claude
+Code, `.agents/skills/` in Codex. Select `/caddie:automate-me` in Claude Code or
+`$caddie:automate-me` / `/skills` in Codex.
+
 ## Skills
+
+### Modes and personalization
+
+- [`caddie-mode`](skills/caddie-mode/SKILL.md): an explicit engineering entry point with playbooks for investigation, bugs, features, prototypes, skill authoring, review, releases, and unattended work.
+- [`automate-me`](skills/automate-me/SKILL.md): creates or updates a user's personal mode from supported preferences, scoped history, and an interview.
 
 ### Types and code shape
 
@@ -168,6 +190,8 @@ claude plugin marketplace update caddie
 
 ## Agents
 
+- [`caddie-agent`](agents/caddie-agent.md): runs a scoped delegated task under the shared `caddie-mode` instructions. Specialist workflows keep their own agent roles.
+
 - [`code-reviewer`](agents/code-reviewer.md): reads the requested diff, requirements, and standards; reports concrete defects without editing or posting. Spawned by `code-review`.
 
 - [`comment-sicko`](agents/comment-sicko.md): deletes comments and flags suppressions. Spawned by `no-comments`.
@@ -191,6 +215,12 @@ Claude Code function hooks, registered as `modules` in the same [`hooks/hooks.js
 - [`quota-bar`](hooks/quota-bar.tsx): a band above the prompt showing the context window by `/context` category and each plan usage limit with a forecast to its reset. `/quota` toggles it. Its state contract is [`types/index.d.ts`](types/index.d.ts) and its tests are [`tests/quota-bar.test.tsx`](tests/quota-bar.test.tsx), run with `claude plugin test .`.
 
 ## Sources and migration
+
+`caddie-mode`, its `caddie-agent` wrapper, and `automate-me` adapt
+[Lauren Tan's pstack](https://github.com/cursor/plugins/tree/main/pstack) mode and
+personalization workflows. They use Caddie's shipped skills and host adapter in
+place of Cursor-specific tools and model defaults. The MIT licenses live beside
+the adapted skills.
 
 `grilling`, `grill-with-docs`, `domain-modeling`, `wizard`, and `tdd` are adapted from
 [Matt Pocock's skills](https://github.com/mattpocock/skills). `writing-plans`,
