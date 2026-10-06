@@ -4,6 +4,7 @@ description: Capture a bug or feature idea as a properly formatted GitHub issue 
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # File an issue
 
@@ -42,7 +43,7 @@ agent that was not here.
 ## 2. Dispatch in the background
 
 In Claude Code, one agent, `subagent_type: "issue-filer"`, with the packet as its prompt.
-Do not restate the agent's rules; it has them. In Codex, dispatch through the host adapter
+Do not restate the agent's rules; it has them. In Codex or OpenCode, dispatch through the corresponding host adapter
 with the shared agent body, the packet, and the absolute fallback-template path.
 
 Subagents run in the background and notify on completion, so this does not block. Dispatch it

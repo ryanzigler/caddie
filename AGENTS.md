@@ -1,7 +1,7 @@
 # Working on Caddie in Codex
 
-Caddie ships skills, agent instructions, and command hooks for Claude Code and
-Codex. The skill prose is the product. Keep shared instructions in one place and
+Caddie ships skills, agent instructions, and command hooks for Claude Code,
+Codex, and OpenCode. The skill prose is the product. Keep shared instructions in one place and
 put host-specific behavior behind an explicit host condition.
 
 Read [references/codex.md](references/codex.md) when following a workflow that uses
@@ -20,6 +20,14 @@ bodies through the host adapter. For each skill with
 `disable-model-invocation: true`, keep `agents/openai.yaml` with
 `policy.allow_implicit_invocation: false` beside its `SKILL.md`.
 
+OpenCode v2 uses the root `package.json` entrypoint `opencode/plugin.js`, installed
+through `opencode plugin add` or configured as a local package path.
+Its runtime registers the same skills with prefixed IDs and maps the explicit-only
+flag to `autoinvoke: false`. Native agents are registered at runtime from the
+shared bodies, preserving host permission defaults and omitting Claude model
+aliases. Read `references/opencode.md` when editing that host's behavior; keep its
+tool payload translation separate from Claude/Codex hooks.
+
 ## Editing and verification
 
 Use kebab-case skill directories matching frontmatter `name`. Put optional depth
@@ -29,8 +37,11 @@ the README skill list when adding or removing a workflow.
 Run `python3 -m unittest discover -s tests -v` after compatibility changes. The
 suite covers packaging, hook payloads, and transcript reading; skill behavior still
 needs a realistic invocation in a fresh session using the installed plugin.
+For OpenCode, run `python3 tests/smoke_opencode.py --invoke` with the v2 CLI and
+network access to an available free model. The default smoke check verifies loading
+without making model requests.
 
 For releases, keep the base version synchronized across both plugin manifests and
-the Claude marketplace entry. A local Codex cachebuster may add `+codex.<suffix>`
+the Claude marketplace entry and the root OpenCode package version. A local Codex cachebuster may add `+codex.<suffix>`
 without changing the Claude version. Follow the README installation instructions
 to test a working copy; editing source does not refresh an installed cache.

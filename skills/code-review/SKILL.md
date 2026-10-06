@@ -2,6 +2,8 @@
 name: code-review
 description: Review a PR, branch, or working diff for correctness and requirement coverage. Use when asked for code review or at the review step of an implementation plan. Use address-review to handle findings already supplied.
 ---
+In OpenCode, first read [the host adapter](../../references/opencode.md).
+
 
 # Code review
 

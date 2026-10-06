@@ -4,6 +4,7 @@ description: Write anything published under Ryan's name in Ryan's own voice, fro
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Ryan voice guide
 

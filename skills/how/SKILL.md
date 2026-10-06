@@ -4,6 +4,7 @@ description: Explain how a subsystem works, trace a runtime flow, or settle a pl
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # How
 

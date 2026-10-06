@@ -37,6 +37,10 @@ policy:
   allow_implicit_invocation: false
 ```
 
+OpenCode v2 honors `disable-model-invocation: true` in the native skill directory.
+Invoke a personal mode with `@<handle>-mode`; see
+[the host adapter](../../../references/opencode.md) for optional command wrappers.
+
 For automatic invocation explicitly requested by the user, replace the generic
 example description with specific entry triggers, omit `disable-model-invocation`,
 and omit or enable the Codex policy. The mode's rules remain scoped to the task.

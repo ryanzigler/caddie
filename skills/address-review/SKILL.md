@@ -4,6 +4,7 @@ description: Triage review findings from any source — a PR's review comments a
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Address review
 

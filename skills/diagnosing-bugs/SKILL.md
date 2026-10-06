@@ -4,6 +4,7 @@ description: "Diagnosis loop for bugs, test failures, crashes, broken CI, and pe
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Diagnosing Bugs
 

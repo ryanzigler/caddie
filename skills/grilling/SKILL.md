@@ -4,6 +4,7 @@ description: Interview the user to resolve a plan, design, or decision. Use when
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Grilling
 

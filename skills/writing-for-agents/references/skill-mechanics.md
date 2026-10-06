@@ -16,7 +16,10 @@ policy:
 
 For a model-invoked skill, omit this policy or set it to `true`. Keep both hosts'
 settings in sync. Codex explicit invocation uses `$` or `/skills`; Claude slash
-commands keep their existing spelling.
+commands keep their existing spelling. OpenCode v2 honors
+`disable-model-invocation: true` and exposes explicit skills through `@<skill-id>`.
+Caddie's registered OpenCode IDs use `caddie-<name>`; its commands use
+`/caddie-<name>`. See [the OpenCode adapter](../../../references/opencode.md).
 
 Two choices, trading the two loads:
 

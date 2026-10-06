@@ -5,6 +5,7 @@ disable-model-invocation: true
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # No comments
 
@@ -18,7 +19,7 @@ You wrote most of the comments in this diff, so you will defend them. Defer to t
 
 ## 1. Run the audit
 
-In Claude Code, spawn a subagent with `subagent_type: "comment-sicko"` and pass it the scope. Do not restate its rules. In Codex, use the host adapter to supply the shared agent body and scope to a fresh subagent. It reports deletions, `MUST KILL` flags on the exact symbols that need reshaping, and skips.
+In Claude Code, spawn a subagent with `subagent_type: "comment-sicko"` and pass it the scope. Do not restate its rules. In Codex or OpenCode, use the corresponding host adapter to supply the shared agent body and scope to a fresh subagent. It reports deletions, `MUST KILL` flags on the exact symbols that need reshaping, and skips.
 
 ## 2. Audit the suppressions first
 

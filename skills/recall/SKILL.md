@@ -1,10 +1,11 @@
 ---
 name: recall
-description: "Rebuild working context from prior Claude Code or Codex sessions, live git/gh state, and the shared record (tickets, PRs, prod errors), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', typically right after a /clear."
+description: "Rebuild working context from prior Claude Code, Codex, or OpenCode sessions, live git/gh state, and the shared record (tickets, PRs, prod errors), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', typically right after a /clear."
 disable-model-invocation: true
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Recall
 
@@ -34,10 +35,11 @@ alone.
    State the scope back before searching. Never quietly turn "all" into "recent N".
 
 2. **Build the triage index yourself.** Default to the current host's session history.
-   An explicit request for Claude or Codex history selects that source regardless of
-   the current host; search both only when requested. For Claude Code, use
+   An explicit request for Claude, Codex, or OpenCode history selects that source regardless of
+   the current host; search multiple hosts only when requested. For Claude Code, use
    [references/transcripts.md](references/transcripts.md). For Codex, use
-   [references/codex-transcripts.md](references/codex-transcripts.md). Run the selected
+   [references/codex-transcripts.md](references/codex-transcripts.md). For OpenCode,
+   use [references/opencode-transcripts.md](references/opencode-transcripts.md). Run the selected
    index in the main thread. Titles or first prompts, mtimes, and prompt counts tell
    you which sessions are worth opening. Report unavailable history as a gap.
 

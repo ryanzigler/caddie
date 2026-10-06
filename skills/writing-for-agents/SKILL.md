@@ -4,6 +4,7 @@ description: How to write prose that an agent reads and acts on — the levers t
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Writing for Agents
 

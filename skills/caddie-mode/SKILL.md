@@ -7,6 +7,7 @@ disable-model-invocation: true
 # Caddie mode
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 Use the invocation text as the task. If empty, use the current request; if neither
 contains a task, ask for one. Enter this mode for the current conversation until
@@ -56,7 +57,7 @@ Delegate only when permitted by the user and host and useful for the scope. Give
 independent tasks disjoint write ownership; serialize changes to shared files.
 For code-writing or general helpers operating in this mode, use the shipped
 [caddie-agent](../../agents/caddie-agent.md). In Claude Code, dispatch its registered
-`caddie-agent` role, host-qualified when required. In Codex, use the adapter's
+`caddie-agent` role, host-qualified when required. In Codex or OpenCode, use the corresponding adapter's
 bundled-agent procedure. Add the absolute path to this `SKILL.md` to the brief.
 Specialized skills retain their own agent roles, including independent reviewers.
 

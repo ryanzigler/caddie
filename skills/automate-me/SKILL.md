@@ -7,6 +7,7 @@ disable-model-invocation: true
 # Automate me
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 Use the invocation text for the requested handle, scope, destination, and create or
 update intent. Produce one `<handle>-mode` skill for this user. Use
@@ -17,9 +18,11 @@ not a set of preferences to copy. This workflow does not enter that mode.
 ## 1. Locate the mode and scope the evidence
 
 Inspect the active project's host-native skill directories for an existing mode.
-In Claude Code, use `.claude/skills/`; in Codex, use `.agents/skills/`. Search nested
+In Claude Code, use `.claude/skills/`; in Codex, use `.agents/skills/`. In OpenCode,
+use `.opencode/skills/` and the explicit-mode locations from its adapter. Search nested
 categories too. Check personal directories for the chosen handle when the user
 requests personal scope: `~/.claude/skills/` or `${CODEX_HOME:-~/.codex}/skills/`.
+In OpenCode, personal scope uses the locations in its host adapter.
 An explicit destination takes precedence. Preserve an existing mode's path and
 category. For a new mode, default to the project directory; ask for a handle when
 it cannot be inferred. Use kebab-case for the directory and frontmatter name.
@@ -64,7 +67,9 @@ not in every instruction the future agent must load.
 
 Write the file at the resolved destination, preserving unrelated files and existing
 rules. Default to `disable-model-invocation: true`. In Codex, also write
-`agents/openai.yaml` with `policy.allow_implicit_invocation: false`. If the user
+`agents/openai.yaml` with `policy.allow_implicit_invocation: false`. In OpenCode,
+keep `disable-model-invocation: true`; v2 honors it. The user invokes the mode
+with `@<handle>-mode`, or an optional command as its adapter specifies. If the user
 explicitly requests automatic invocation, omit the Claude flag and remove or update
 only that Codex policy, preserving other metadata. Describe specific triggers for
 that user's mode rather than generic coding keywords. Decide conversation persistence
@@ -85,7 +90,8 @@ uncontradicted rule in the existing mode. Drop unsupported defaults and duplicat
 
 Show the path, a concise draft summary, evidence gaps, and invocation instructions:
 Claude Code uses `/<handle>-mode`; Codex uses `$<handle>-mode` or `/skills` after
-starting a fresh session or refreshing discovery. Ask for feedback on accuracy and
+starting a fresh session or refreshing discovery. OpenCode uses `@<handle>-mode`
+for a personal skill, or `/<handle>-mode` when an optional command was created. Ask for feedback on accuracy and
 missing conventions; iterate in place. Where available, try a realistic task in a
 fresh session and ask whether its behavior matches the user's intent. A loader check
 only proves discovery. Finish with the files ready for review; commit or open a PR
