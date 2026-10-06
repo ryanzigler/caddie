@@ -4,6 +4,7 @@ description: Operate fully autonomously without waiting for human confirmation. 
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Autonomous Mode
 
@@ -48,7 +49,7 @@ There is no human glancing at the diff as you go, and you should not grade your 
 
 **1. Mechanical checks.** Run the project's checks — tests, type checker, linter, build — before considering the work done. If they fail, fixing them is part of the task, not a reason to stop and ask.
 
-**2. Adversarial review.** Once the checks pass, request a challenge review. In Codex,
+**2. Adversarial review.** Once the checks pass, request a challenge review. In Codex or OpenCode,
 spawn a fresh general agent through the host adapter, give it the full diff scope
 (including working-tree changes), the target base branch, and the steering described
 below. Ask it to read the code and return evidence-backed findings without editing.

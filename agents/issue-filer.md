@@ -40,7 +40,7 @@ all there is.
 - **Markdown templates (`*.md`).** Use the body as written, stripping the frontmatter, and
   apply its `labels:`.
 - **Nothing there.** Read the fallback templates and use the one matching your
-  classification. In Codex, read the absolute fallback-template path supplied by the
+  classification. In Codex or OpenCode, read the absolute fallback-template path supplied by the
   parent, or resolve [the templates](../skills/file-issue/references/templates.md) relative
   to this agent file. In Claude Code, keep using:
 

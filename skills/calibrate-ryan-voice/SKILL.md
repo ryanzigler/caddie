@@ -5,6 +5,7 @@ disable-model-invocation: true
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Calibrate Ryan's voice
 

@@ -2,9 +2,78 @@
 
 Reads the green, hands you the right club.
 
-Personal engineering skills, agents, hooks, and mods for Claude Code and Codex, packaged as one plugin.
+Personal engineering skills, agents, hooks, and mods for Claude Code, Codex, and OpenCode.
 
 ## Installation Options
+
+### OpenCode v2
+
+Install with OpenCode's native plugin manager:
+
+```bash
+opencode plugin add github:ryanzigler/caddie
+```
+
+OpenCode installs the Git package and adds it to your global configuration. For one
+project, add `"github:ryanzigler/caddie"` to the `plugins` array in its
+`opencode.json(c)` instead. The package includes the shared skills, references,
+agent instructions, and guards; its runtime registers five native subagents.
+
+To test a local checkout, add its absolute root path to that array:
+
+```json
+{
+  "plugins": ["/PATH/TO/CLONED/REPO"]
+}
+```
+
+Restart OpenCode or its service after installation. Invoke `/caddie-how <task>`,
+`/caddie-caddie-mode <task>`, or any `/caddie-<skill-name>` command. Skills also use
+`@caddie-<skill-name>`. The runtime registers all 35 shared workflows; explicit-only
+workflows have `autoinvoke: false`, so they remain selectable without appearing in
+the model's available skill list.
+
+This integration targets OpenCode v2.0.22. Its [host adapter](references/opencode.md)
+translates delegation, tools, and workflow paths. The runtime bridges the shared
+git, suppression, and retired-skill guards to v2 tool hooks. The guards require
+Bash and `jq`; optional history workflows require Python 3.9+. Installation does
+not require Python. The Claude quota-bar UI module stays Claude-only.
+OpenCode v1 uses a different plugin API and is not supported by
+this entrypoint. See the official [v2 plugin documentation](https://opencode.ai/v2/docs/build/plugins/).
+
+Manage the installed package with OpenCode:
+
+```bash
+opencode plugin update github:ryanzigler/caddie
+opencode plugin remove github:ryanzigler/caddie
+```
+
+Package installations use OpenCode's cache; editing a source checkout does not
+refresh an installed Git package. For local development, use the checkout path
+above and restart OpenCode after shared source changes.
+
+If you installed an earlier working copy with the Python installer, preserve any
+custom edits and remove its `.caddie-install.json`, `caddie/`, `plugins/caddie.js`,
+and `agents/caddie-*.md` from that OpenCode config directory before switching.
+Keeping both installations would register Caddie twice.
+
+Verify with:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 tests/smoke_opencode.py
+python3 tests/smoke_opencode.py --invoke
+python3 tests/smoke_opencode.py --invoke --guards
+```
+
+The smoke test packs the working copy, installs it through `opencode plugin add`
+from a disposable Git repository, then starts an isolated server and checks
+discovery and explicit invocation policy. `--invoke` also runs the `how` command with an available free model,
+checks a completed subagent, and digests the resulting history export. It requires
+network access to that model provider. `--guards` also checks actual shell rejection
+and suppression feedback through tool calls in disposable sessions.
+[History support](skills/recall/references/opencode-transcripts.md)
+uses v2 session exports with project, current-session, child-session, and prose filters.
 
 ### Codex
 
@@ -118,14 +187,16 @@ active within that conversation until you opt out. New conversations need a new
 invocation.
 
 In Claude Code, run `/caddie:caddie-mode <task>`. In Codex, select
-`$caddie:caddie-mode` or use `/skills`, then supply the task.
+`$caddie:caddie-mode` or use `/skills`, then supply the task. In OpenCode, run
+`/caddie-caddie-mode <task>`.
 
 Use `automate-me` to create your own `<handle>-mode`. It combines project-scoped
 history with a short interview, or updates an existing mode from what's changed.
 Missing history is fine; the interview can supply the rules. Personal modes default
 to explicit invocation and project-local placement: `.claude/skills/` in Claude
-Code, `.agents/skills/` in Codex. Select `/caddie:automate-me` in Claude Code or
-`$caddie:automate-me` / `/skills` in Codex.
+Code, `.agents/skills/` in Codex, `.opencode/skills/` in OpenCode. Select
+`/caddie:automate-me` in Claude Code, `$caddie:automate-me` / `/skills` in Codex,
+or `/caddie-automate-me` in OpenCode.
 
 ## Skills
 

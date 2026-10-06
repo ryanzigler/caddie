@@ -26,6 +26,15 @@ then digest selected paths. The helper filters recorded `cwd`, injected context,
 subagents, and the current thread. Check message timestamps for an update cutoff;
 file mtime alone does not prove that every message is new.
 
+## OpenCode
+
+Read [the OpenCode transcript reference](../../recall/references/opencode-transcripts.md).
+Use the v2 session-export reader with an explicit project root, private export
+directory, current-session exclusion, and requested window. Digest indexed exports;
+the reader omits child sessions, synthetic context, injected skills, reasoning,
+tools, and messages recorded outside the project after location changes.
+Use message timestamps for an update cutoff and cite session and message IDs.
+
 ## Synthesis
 
 For substantial history, delegate disjoint slices to read-only general agents when

@@ -4,12 +4,15 @@ description: "Generate a project-local verification skill that drives the real a
 disable-model-invocation: true
 ---
 
+In OpenCode, first read [the host adapter](../../references/opencode.md).
+
 # Create a verification skill
 
 Every serious project needs a scripted way to drive the real app and prove behavior:
 launch it, exercise a feature the way a user would, capture evidence. This skill generates
 that as a project-local skill, tailored to the repo. In Claude Code, its directory is
-`.claude/skills/verify-<app>/`. In Codex, use `.agents/skills/verify-<app>/`. Call this
+`.claude/skills/verify-<app>/`. In Codex, use `.agents/skills/verify-<app>/`;
+in OpenCode, use `.opencode/skills/verify-<app>/`. Call this
 directory `<skill-dir>` below; an explicit user-supplied destination takes precedence. It
 is what [verification-before-completion](../verification-before-completion/SKILL.md) assumes already exists — without a
 harness, "verified" collapses back into "the tests passed".

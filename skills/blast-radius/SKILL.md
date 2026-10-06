@@ -4,6 +4,7 @@ description: "Find what a change could break outside its own diff, then prove th
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Blast radius
 

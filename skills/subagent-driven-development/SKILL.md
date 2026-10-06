@@ -2,6 +2,8 @@
 name: subagent-driven-development
 description: Execute a substantial plan using a fresh implementer and independent review for each task. Use when a plan has separable implementation tasks that benefit from isolated context, or when the user asks for delegated implementation. Prefer executing-plans for small or tightly coupled work and when the user selects inline execution.
 ---
+In OpenCode, first read [the host adapter](../../references/opencode.md).
+
 
 # Subagent-driven development
 

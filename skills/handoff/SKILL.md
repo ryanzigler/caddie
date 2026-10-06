@@ -5,6 +5,7 @@ disable-model-invocation: true
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 Write a handoff document summarising the current conversation so a fresh agent can continue the
 work.
@@ -21,7 +22,8 @@ Include:
   surprising about this codebase that the next session would otherwise rediscover.
 - **Suggested skills**: which skills the next agent should use, and for what. In Claude Code,
   invoke them with the Skill tool; in Codex, use the installed skill loader or read the
-  installed `SKILL.md`.
+  installed `SKILL.md`. In OpenCode, use `skill` for model-invoked workflows
+  and `/caddie-<name>` for workflows requiring explicit user invocation.
 
 Write pointers, not copies. Anything already captured in another artifact — a spec, a plan, an
 issue, a PR, a commit, a diff — is referenced by path, number, or URL rather than summarised

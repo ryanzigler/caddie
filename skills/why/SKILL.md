@@ -4,6 +4,7 @@ description: "Reconstruct the motivation and history behind code, cited and conf
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Why
 
@@ -49,7 +50,7 @@ Pass the anchor to every investigator so none of them rediscovers it.
 
 Do not assume. Determine what is actually reachable before deciding what to spawn.
 
-1. **Scan your own tool surface.** In Codex, follow the host adapter for discovery and authentication checks. The following `ToolSearch` and CLI details apply to Claude Code. Any tool named `mcp__<server>__<tool>` is a connected MCP server. Deferred MCP tools appear by name in system-reminders without schemas; that still tells you the server exists. Investigators load their own schemas with `ToolSearch`, so do not load them here.
+1. **Scan your own tool surface.** In Codex or OpenCode, follow the corresponding host adapter for discovery and authentication checks. The following `ToolSearch` and CLI details apply to Claude Code. Any tool named `mcp__<server>__<tool>` is a connected MCP server. Deferred MCP tools appear by name in system-reminders without schemas; that still tells you the server exists. Investigators load their own schemas with `ToolSearch`, so do not load them here.
 2. **In Claude Code, run `claude mcp list`.** It prints every configured server as `Connected` or `Needs authentication`. This distinction is load-bearing: `Connected` means searchable, `Needs authentication` means the category is a **gap** and the coverage map should say so and mention that `/mcp` authenticates it.
 3. **Check CLI-backed sources**, since not every category arrives as an MCP. `command -v` for `git` and `gh` (source control, expected present), `sentry-cli` (error tracking), `bq` (product analytics), and whatever deploy tooling the repo uses (infrastructure observability). A working CLI counts as connected.
 4. **Map each connected source to exactly one category**, classifying from its name, instructions, and tool names. Ambiguous cases get noted in the coverage map. Two sources in one category means one investigator owns both.

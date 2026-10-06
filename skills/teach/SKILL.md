@@ -4,6 +4,7 @@ description: Explain a change, subsystem, or concept plainly until the person ac
 ---
 
 In Codex, first read [the host adapter](../../references/codex.md).
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Teach
 
