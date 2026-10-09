@@ -1,6 +1,6 @@
 {
   "name": "caddie",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
   "author": {
     "name": "Ryan Zigler"
@@ -10,6 +10,7 @@
   "license": "MIT",
   "keywords": ["skills", "engineering", "workflows"],
   "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
   "apps": "./.app.json",
   "interface": {
     "displayName": "Caddie",
