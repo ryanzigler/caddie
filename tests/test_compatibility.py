@@ -25,6 +25,12 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(codex["skills"], "./skills/")
         self.assertTrue((ROOT / codex["skills"]).is_dir())
 
+    def test_mcp_configs_declare_servers(self):
+        codex = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        claude_servers = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]
+        codex_servers = json.loads((ROOT / codex["mcpServers"]).read_text())["mcpServers"]
+        self.assertLessEqual(claude_servers.keys(), codex_servers.keys())
+
     def test_explicit_invocation_policies_match(self):
         for skill in (ROOT / "skills").glob("*/SKILL.md"):
             with self.subTest(skill=skill.parent.name):

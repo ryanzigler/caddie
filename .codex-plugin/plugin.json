@@ -10,6 +10,7 @@
   "license": "MIT",
   "keywords": ["skills", "engineering", "workflows"],
   "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
   "apps": "./.app.json",
   "interface": {
     "displayName": "Caddie",

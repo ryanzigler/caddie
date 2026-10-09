@@ -281,15 +281,24 @@ Shipped in [`hooks/hooks.json`](hooks/hooks.json); each guard is a few lines of 
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
 
+## MCP servers
+
+Claude Code loads [`.mcp.json`](.mcp.json); Codex loads [`.codex-mcp.json`](.codex-mcp.json) through its manifest. They hold only servers no plugin ships. Neither needs an environment variable.
+
+| Server | Claude Code | Codex | Machine requirement |
+| --- | --- | --- | --- |
+| `harvest` | yes | yes | OAuth sign-in once per machine (`/mcp` in Claude Code, `codex mcp login harvest` in Codex) |
+| `playwright` | no | yes | Node.js for `npx` |
+
 ## Third-party plugins
 
-Plugins Caddie does not ship are installed by [`scripts/install-plugins.sh`](scripts/install-plugins.sh), for both Claude Code and Codex. It also adds the user-scope Harvest MCP server, which has no plugin. Re-running it is safe.
+Plugins Caddie does not ship are installed by [`scripts/install-plugins.sh`](scripts/install-plugins.sh), for both Claude Code and Codex. Re-running it is safe.
 
 ```bash
 codex login && scripts/install-plugins.sh
 ```
 
-Codex's curated plugins need `codex login` first. When the Harvest server is first added to Codex, a browser opens to authorize it; Claude Code asks for that through `/mcp` instead. Project-specific plugins, such as Railway, belong in that project's settings, not here.
+Codex's curated plugins need `codex login` first. Project-specific plugins and servers, such as Railway, belong in that project's settings, not here.
 
 ## Mods
 

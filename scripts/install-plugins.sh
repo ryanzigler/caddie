@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Installs the third-party plugins and user-scope MCP servers Ryan uses in Claude Code and
-# Codex, so every machine matches. Caddie itself is enabled by each machine's settings file.
+# Installs the third-party plugins Ryan uses in Claude Code and Codex, so every machine
+# matches. Caddie itself is enabled by each machine's settings file, and ships the MCP servers
+# that have no plugin of their own.
 # Safe to re-run. Run `codex login` first: the openai-curated-remote plugins need it.
 set -uo pipefail
 
@@ -40,15 +41,9 @@ fi
 
 for marketplace in "${claude_marketplaces[@]}"; do run claude plugin marketplace add "$marketplace"; done
 for plugin in "${claude_plugins[@]}"; do run claude plugin install "$plugin"; done
-claude mcp get harvest >/dev/null 2>&1 || run claude mcp add --scope user --transport http harvest https://api.harvestapp.com/mcp
 
 for marketplace in "${codex_marketplaces[@]}"; do run codex plugin marketplace add "$marketplace"; done
 for plugin in "${codex_plugins[@]}"; do run codex plugin add "$plugin"; done
-if ! codex mcp get harvest >/dev/null 2>&1; then
-  echo "Codex will now open a browser to authorize Harvest. Click Authorize there to finish this step."
-  run codex mcp add harvest --url https://api.harvestapp.com/mcp
-fi
-codex mcp get playwright >/dev/null 2>&1 || run codex mcp add playwright -- npx @playwright/mcp@latest
 
 if ((${#failed[@]})); then
   printf '\nFailed:\n' >&2

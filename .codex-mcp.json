@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "harvest": {
+      "type": "http",
+      "url": "https://api.harvestapp.com/mcp"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
