@@ -78,8 +78,8 @@ sources as gaps. Do not run `claude mcp list` to discover Codex connections.
 
 ## Hooks
 
-Codex loads the shared `hooks/hooks.json` on hosts with plugin hooks enabled and
-trusted. It reports shell and unified-exec calls as `Bash`, with the command in
+Codex loads `hooks/codex-hooks.json`, a copy of the shared hooks without Claude's
+`modules`, on hosts with plugin hooks enabled and trusted. It reports shell and unified-exec calls as `Bash`, with the command in
 `tool_input.command`. Patch calls report `apply_patch` with the patch in that same
 field and also match `Edit` and `Write`. The existing matchers therefore reach the
 git guard and suppression guard without a separate Codex hook configuration.

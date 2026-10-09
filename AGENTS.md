@@ -12,8 +12,10 @@ That adapter is shipped context; this file is guidance for working on the repo.
 
 Preserve Claude's `.claude-plugin/` manifests, `agents/` registration, hook events,
 and invocation semantics when extending Codex support. Codex packaging lives in
-`.codex-plugin/plugin.json` and points at the same `skills/`. Both hosts discover
-`hooks/hooks.json`; changes to shared hooks must be tested with both payloads.
+`.codex-plugin/plugin.json` and points at the same `skills/`. Claude reads
+`hooks/hooks.json`; Codex reads `hooks/codex-hooks.json`, the same hooks without the
+Claude-only `modules` key, which Codex rejects. Edit both together (a test enforces
+it) and test changes to shared hooks with both payloads.
 
 Codex does not register the Claude agent Markdown files as agent types. Reuse their
 bodies through the host adapter. For each skill with

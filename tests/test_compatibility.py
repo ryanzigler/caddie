@@ -25,6 +25,12 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(codex["skills"], "./skills/")
         self.assertTrue((ROOT / codex["skills"]).is_dir())
 
+    def test_codex_hooks_mirror_claude_hooks_without_modules(self):
+        codex = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        claude_hooks = json.loads((ROOT / "hooks/hooks.json").read_text())
+        codex_hooks = json.loads((ROOT / codex["hooks"]).read_text())
+        self.assertEqual(codex_hooks, {"hooks": claude_hooks["hooks"]})
+
     def test_mcp_configs_declare_servers(self):
         codex = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
         claude_servers = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]
