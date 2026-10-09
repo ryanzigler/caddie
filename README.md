@@ -29,7 +29,7 @@ To test a local checkout, add its absolute root path to that array:
 
 Restart OpenCode or its service after installation. Invoke `/caddie-how <task>`,
 `/caddie-caddie-mode <task>`, or any `/caddie-<skill-name>` command. Skills also use
-`@caddie-<skill-name>`. The runtime registers all 36 shared workflows; explicit-only
+`@caddie-<skill-name>`. The runtime registers all 35 shared workflows; explicit-only
 workflows have `autoinvoke: false`, so they remain selectable without appearing in
 the model's available skill list.
 
@@ -100,7 +100,8 @@ require a host with delegation available. Explicit-only skills carry Codex's
 `allow_implicit_invocation: false` policy alongside Claude's frontmatter flag.
 
 On Codex hosts with plugin hooks enabled, review and trust the bundled hooks before
-expecting them to run; until then the `SessionStart` user instructions are not injected either. The shared git and suppression hooks require Bash and `jq`;
+expecting them to run; until then the `SessionStart` user instructions are not
+injected either. The shared git and suppression hooks require Bash and `jq`;
 Codex transcript recall also requires Python 3. The retired-skill redirect is
 Claude-only; Codex follows the adapter's replacement table. See the official
 [plugin packaging](https://developers.openai.com/plugins/build/plugins) and
@@ -252,10 +253,6 @@ or `/caddie-automate-me` in OpenCode.
 
 - [`autonomous-mode`](skills/autonomous-mode/SKILL.md): no questions, no unexecuted plans; decisions get made and written down, and the diff gets an adversarial Codex review before the run reports back.
 
-### Tools and services
-
-- [`context7-docs`](skills/context7-docs/SKILL.md): answers library, framework, and API questions from documentation fetched with the `ctx7` CLI, not from memory.
-
 ### Proof and prose
 
 - [`create-verification-skill`](skills/create-verification-skill/SKILL.md): builds a project-local skill that drives the real app, and runs it once before handing it over.
@@ -284,19 +281,15 @@ Shipped in [`hooks/hooks.json`](hooks/hooks.json); each guard is a few lines of 
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
 
-## MCP servers
+## Third-party plugins
 
-Claude Code loads [`.mcp.json`](.mcp.json); Codex loads [`.codex-mcp.json`](.codex-mcp.json) through its manifest. Neither needs an environment variable.
+Plugins Caddie does not ship are installed by [`scripts/install-plugins.sh`](scripts/install-plugins.sh), for both Claude Code and Codex. It also adds the user-scope Harvest MCP server, which has no plugin. Re-running it is safe.
 
-| Server | Claude Code | Codex | Machine requirement |
-| --- | --- | --- | --- |
-| `railway` | yes | yes | `railway` CLI on `PATH`, signed in with `railway login` |
-| `harvest` | yes | yes | OAuth sign-in once per machine (`/mcp` in Claude Code, `codex mcp login` in Codex) |
-| `context7` | no; `context7-docs` uses the CLI | yes | none; set `CONTEXT7_API_KEY` in a per-machine header only for higher limits |
-| `playwright` | no | yes | Node.js for `npx` |
-| `figma` | no; the `figma` plugin ships it | yes | OAuth sign-in once per machine |
+```bash
+codex login && scripts/install-plugins.sh
+```
 
-OpenCode does not load either file.
+Codex's curated plugins need `codex login` first. When the Harvest server is first added to Codex, a browser opens to authorize it; Claude Code asks for that through `/mcp` instead. Project-specific plugins, such as Railway, belong in that project's settings, not here.
 
 ## Mods
 
