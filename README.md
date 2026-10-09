@@ -100,7 +100,8 @@ require a host with delegation available. Explicit-only skills carry Codex's
 `allow_implicit_invocation: false` policy alongside Claude's frontmatter flag.
 
 On Codex hosts with plugin hooks enabled, review and trust the bundled hooks before
-expecting them to run. The shared git and suppression hooks require Bash and `jq`;
+expecting them to run; until then the `SessionStart` user instructions are not
+injected either. The shared git and suppression hooks require Bash and `jq`;
 Codex transcript recall also requires Python 3. The retired-skill redirect is
 Claude-only; Codex follows the adapter's replacement table. See the official
 [plugin packaging](https://developers.openai.com/plugins/build/plugins) and
@@ -271,13 +272,33 @@ or `/caddie-automate-me` in OpenCode.
 
 ## Hooks
 
-Shipped in [`hooks/hooks.json`](hooks/hooks.json); each script is a few lines of bash and exits 2 with a message the model reads.
+Shipped in [`hooks/hooks.json`](hooks/hooks.json); each guard is a few lines of bash and exits 2 with a message the model reads.
 
+- [`user-instructions.sh`](hooks/user-instructions.sh): on `SessionStart`, prints [`user-instructions.md`](hooks/user-instructions.md) into the session context in both Claude Code and Codex. It is the single source for what used to be `~/.claude/CLAUDE.md`; edit it here.
 - [`retired-skill-redirect.sh`](hooks/retired-skill-redirect.sh): redirects retired writing skills (`unslop`, `humanize-writing`, and `cro-metrics-writing`) to `ryan-voice-guide`.
 - [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
+
+## MCP servers
+
+Claude Code loads [`.mcp.json`](.mcp.json); Codex loads [`.codex-mcp.json`](.codex-mcp.json) through its manifest. They hold only servers no plugin ships. Neither needs an environment variable.
+
+| Server | Claude Code | Codex | Machine requirement |
+| --- | --- | --- | --- |
+| `harvest` | yes | yes | OAuth sign-in once per machine (`/mcp` in Claude Code, `codex mcp login harvest` in Codex) |
+| `playwright` | no | yes | Node.js for `npx` |
+
+## Third-party plugins
+
+Plugins Caddie does not ship are installed by [`scripts/install-plugins.sh`](scripts/install-plugins.sh), for both Claude Code and Codex. Re-running it is safe.
+
+```bash
+codex login && scripts/install-plugins.sh
+```
+
+Codex's curated plugins need `codex login` first. Project-specific plugins and servers, such as Railway, belong in that project's settings, not here.
 
 ## Mods
 

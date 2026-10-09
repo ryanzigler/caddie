@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "harvest": {
+      "type": "http",
+      "url": "https://api.harvestapp.com/mcp"
+    }
+  }
+}

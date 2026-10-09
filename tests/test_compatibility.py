@@ -25,6 +25,12 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(codex["skills"], "./skills/")
         self.assertTrue((ROOT / codex["skills"]).is_dir())
 
+    def test_mcp_configs_declare_servers(self):
+        codex = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        claude_servers = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]
+        codex_servers = json.loads((ROOT / codex["mcpServers"]).read_text())["mcpServers"]
+        self.assertLessEqual(claude_servers.keys(), codex_servers.keys())
+
     def test_explicit_invocation_policies_match(self):
         for skill in (ROOT / "skills").glob("*/SKILL.md"):
             with self.subTest(skill=skill.parent.name):
@@ -121,6 +127,16 @@ class HookTests(unittest.TestCase):
     def test_codex_multiple_files(self):
         patch = "*** Begin Patch\n*** Update File: a.ts\n@@\n-// @ts-ignore\n+call();\n*** Add File: b.ts\n+// @ts-expect-error\n*** End Patch"
         self.suppression({"tool_name": "apply_patch", "tool_input": {"command": patch}}, 2)
+
+    def test_session_start_prints_user_instructions_from_another_directory(self):
+        with tempfile.TemporaryDirectory() as cwd:
+            result = subprocess.run(
+                ["bash", str(ROOT / "hooks/user-instructions.sh")], cwd=cwd,
+                input=json.dumps({"hook_event_name": "SessionStart", "source": "startup"}),
+                text=True, capture_output=True, check=False,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, (ROOT / "hooks/user-instructions.md").read_text())
 
     def test_destructive_command_is_rejected_without_execution(self):
         result = self.run_hook("destructive-git-guard.sh", {
