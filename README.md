@@ -29,7 +29,7 @@ To test a local checkout, add its absolute root path to that array:
 
 Restart OpenCode or its service after installation. Invoke `/caddie-how <task>`,
 `/caddie-caddie-mode <task>`, or any `/caddie-<skill-name>` command. Skills also use
-`@caddie-<skill-name>`. The runtime registers all 38 shared workflows; explicit-only
+`@caddie-<skill-name>`. The runtime registers all 36 shared workflows; explicit-only
 workflows have `autoinvoke: false`, so they remain selectable without appearing in
 the model's available skill list.
 
@@ -255,8 +255,6 @@ or `/caddie-automate-me` in OpenCode.
 ### Tools and services
 
 - [`context7-docs`](skills/context7-docs/SKILL.md): answers library, framework, and API questions from documentation fetched with the `ctx7` CLI, not from memory.
-- [`playwright`](skills/playwright/SKILL.md): drives a real browser from the terminal with `playwright-cli`. Vendored from [OpenAI's curated Codex skills](https://github.com/openai/skills/tree/main/skills/.curated/playwright), Apache-2.0.
-- [`use-railway`](skills/use-railway/SKILL.md): operates Railway projects, services, deploys, databases, and tracing. Vendored from [railwayapp/railway-skills](https://github.com/railwayapp/railway-skills), MIT; refresh it from upstream rather than editing it here.
 
 ### Proof and prose
 
@@ -284,7 +282,7 @@ Shipped in [`hooks/hooks.json`](hooks/hooks.json); each guard is a few lines of 
 - [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 
-Adapted skills carry their upstream `LICENSE` next to the `SKILL.md`.
+Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
 
 ## MCP servers
 
