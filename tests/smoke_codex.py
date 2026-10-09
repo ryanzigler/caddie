@@ -74,6 +74,19 @@ def main():
                     assert Path(skill["path"]).resolve().is_relative_to(Path(temporary).resolve())
                     assert Path(skill["path"]).is_file(), skill["path"]
                 print(f"Installed and discovered all {len(skills)} Caddie skills with no loader errors.")
+
+                send({"id": 3, "method": "hooks/list", "params": {"cwds": [temporary]}})
+                result = receive(3)
+                hooks = [hook for row in result["data"] for hook in row["hooks"]
+                         if hook.get("pluginId") == "caddie@caddie"]
+                problems = [problem for row in result["data"]
+                            for problem in row["errors"] + row["warnings"]]
+                assert not problems, problems
+                manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+                declared = json.loads((ROOT / manifest["hooks"]).read_text())["hooks"]
+                expected = sum(len(group["hooks"]) for groups in declared.values() for group in groups)
+                assert len(hooks) == expected, hooks
+                print(f"Loaded all {len(hooks)} Caddie hooks with no parse errors.")
             finally:
                 process.terminate()
                 try:

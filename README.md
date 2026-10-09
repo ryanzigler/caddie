@@ -272,7 +272,7 @@ or `/caddie-automate-me` in OpenCode.
 
 ## Hooks
 
-Shipped in [`hooks/hooks.json`](hooks/hooks.json); each guard is a few lines of bash and exits 2 with a message the model reads.
+Shipped in [`hooks/hooks.json`](hooks/hooks.json), mirrored for Codex in [`hooks/codex-hooks.json`](hooks/codex-hooks.json) without the Claude-only `modules`; each guard is a few lines of bash and exits 2 with a message the model reads.
 
 - [`user-instructions.sh`](hooks/user-instructions.sh): on `SessionStart`, prints [`user-instructions.md`](hooks/user-instructions.md) into the session context in both Claude Code and Codex. It is the single source for what used to be `~/.claude/CLAUDE.md`; edit it here.
 - [`retired-skill-redirect.sh`](hooks/retired-skill-redirect.sh): redirects retired writing skills (`unslop`, `humanize-writing`, and `cro-metrics-writing`) to `ryan-voice-guide`.
