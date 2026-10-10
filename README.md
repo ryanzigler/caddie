@@ -253,6 +253,10 @@ or `/caddie-automate-me` in OpenCode.
 
 - [`autonomous-mode`](skills/autonomous-mode/SKILL.md): no questions, no unexecuted plans; decisions get made and written down, and the diff gets an adversarial Codex review before the run reports back.
 
+### Images (Claude Code only)
+
+- [`generate-image`](claude-skills/generate-image/SKILL.md): gives Claude image generation by sending an art-directed brief to ChatGPT through your logged-in Codex CLI, waiting for the image, then looking at the PNG before handing it over. Uses your ChatGPT quota, no API key. Adapted from [oakplank/gpt-image-bridge](https://github.com/oakplank/gpt-image-bridge). Not shipped to Codex, which generates images natively, or to OpenCode.
+
 ### Proof and prose
 
 - [`create-verification-skill`](skills/create-verification-skill/SKILL.md): builds a project-local skill that drives the real app, and runs it once before handing it over.
