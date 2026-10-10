@@ -37,6 +37,16 @@ class PackagingTests(unittest.TestCase):
         codex_servers = json.loads((ROOT / codex["mcpServers"]).read_text())["mcpServers"]
         self.assertLessEqual(claude_servers.keys(), codex_servers.keys())
 
+    def test_claude_only_skills_stay_out_of_other_hosts(self):
+        claude = json.loads((ROOT / ".claude-plugin/plugin.json").read_text())
+        self.assertEqual(claude["skills"], ["./claude-skills/"])
+        claude_only = {p.parent.name for p in (ROOT / "claude-skills").glob("*/SKILL.md")}
+        shared = {p.parent.name for p in (ROOT / "skills").glob("*/SKILL.md")}
+        self.assertIn("generate-image", claude_only)
+        self.assertEqual(claude_only & shared, set())
+        package = json.loads((ROOT / "package.json").read_text())
+        self.assertNotIn("claude-skills", package["files"])
+
     def test_explicit_invocation_policies_match(self):
         for skill in (ROOT / "skills").glob("*/SKILL.md"):
             with self.subTest(skill=skill.parent.name):
