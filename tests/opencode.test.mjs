@@ -106,6 +106,22 @@ test('edit, write, and patch add correction feedback only after successful suppr
   assert.equal(removed.result.content, 'Written')
 })
 
+test('edits that break the JS/TS style get style feedback alongside suppression feedback', async (t) => {
+  const f = await fixture()
+  t.after(() => rm(f.directory, { recursive: true, force: true }))
+  const after = f.hooks.get('execute.after')
+  const style = { tool: 'write', input: { path: 'a.ts', content: 'var count = 0' }, status: 'completed', result: { content: 'Written' } }
+  after(style)
+  assert.match(style.result.content, /Caddie style guard[\s\S]*a\.ts: var:/)
+  assert.doesNotMatch(style.result.content, /suppression guard/)
+  const both = { tool: 'edit', input: { path: 'b.ts', newString: '// @ts-ignore\nitems.forEach(run)' }, status: 'completed', result: { content: 'Written' } }
+  after(both)
+  assert.match(both.result.content, /suppression guard[\s\S]*fix the cause[\s\S]*style guard[\s\S]*\.forEach:/)
+  const prose = { tool: 'write', input: { path: 'notes.md', content: 'var count = 0' }, status: 'completed', result: { content: 'Written' } }
+  after(prose)
+  assert.equal(prose.result.content, 'Written')
+})
+
 test('structured tool content receives feedback without losing its original content', async (t) => {
   const f = await fixture()
   t.after(() => rm(f.directory, { recursive: true, force: true }))

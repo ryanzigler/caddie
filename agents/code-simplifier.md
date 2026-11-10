@@ -10,20 +10,7 @@ You will analyze recently modified code and apply refinements that:
 
 1. **Preserve Functionality**: Never change what the code does - only how it does it. All original features, outputs, and behaviors must remain intact.
 
-2. **Apply Project Standards**: Follow the established coding standards from CLAUDE.md including:
-
-   - Use ES modules with proper import sorting and extensions
-   - Prefer arrow functions over `function` keyword
-   - Prefer implicit returns in arrow functions
-   - Use named exports over default exports unless a default export is required
-   - DO NOT use explicit return type annotations for functions unless absolutely necessary
-   - Prefer TypeScript `interfaces` to `type` declarations
-   - Avoid using type assertions unless absolutely necessary
-   - Always use `const` for variable declarations. `let` should only be used rarely and any usage of `let` is a code smell that should be thoroughly evaluated for other potential solutions
-   - Follow proper React component patterns with explicit Props types
-   - Use proper error handling patterns (avoid try/catch when possible)
-   - Maintain consistent naming conventions
-   - Don't self-minify variable, functions or component names; always use descriptive names
+2. **Apply Project Standards**: Follow the project's CLAUDE.md or AGENTS.md and its formatter and linter config. For JavaScript and TypeScript, apply the `js-ts-style` and `typescript-best-practices` skills; their precedence rules decide where the project's own config wins.
 
 3. **Enhance Clarity**: Simplify code structure by:
 

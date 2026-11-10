@@ -35,7 +35,7 @@ the model's available skill list.
 
 This integration targets OpenCode v2.0.22. Its [host adapter](references/opencode.md)
 translates delegation, tools, and workflow paths. The runtime bridges the shared
-git, suppression, and retired-skill guards to v2 tool hooks. The guards require
+git, suppression, JS/TS style, and retired-skill guards to v2 tool hooks. The guards require
 Bash and `jq`; optional history workflows require Python 3.9+. Installation does
 not require Python. The Claude quota-bar UI module stays Claude-only.
 OpenCode v1 uses a different plugin API and is not supported by
@@ -101,7 +101,7 @@ require a host with delegation available. Explicit-only skills carry Codex's
 
 On Codex hosts with plugin hooks enabled, review and trust the bundled hooks before
 expecting them to run; until then the `SessionStart` user instructions are not
-injected either. The shared git and suppression hooks require Bash and `jq`;
+injected either. The shared git, suppression, and style hooks require Bash and `jq`;
 Codex transcript recall also requires Python 3. The retired-skill redirect is
 Claude-only; Codex follows the adapter's replacement table. See the official
 [plugin packaging](https://developers.openai.com/plugins/build/plugins) and
@@ -210,6 +210,7 @@ or `/caddie-automate-me` in OpenCode.
 
 - [`principle-type-system-discipline`](skills/principle-type-system-discipline/SKILL.md): design types so illegal states can't be represented.
 - [`typescript-best-practices`](skills/typescript-best-practices/SKILL.md): the same discipline in concrete TypeScript syntax. Fires on any `.ts`, `.tsx`, or `.mts` edit.
+- [`js-ts-style`](skills/js-ts-style/SKILL.md): Ryan's JS/TS style for declarations, functions, exports, imports, control flow, naming, React, whitespace, and formatting, inferred from his own code. It holds with any formatter or linter, or none; a tool the project already runs wins on what it enforces. Fires on any JS or TS edit.
 - [`code-simplifier`](skills/code-simplifier/SKILL.md): delegates a scoped cleanup to the shared code-simplifier agent, preserving behavior.
 - [`workspace-packages`](skills/workspace-packages/SKILL.md): entrypoints, `exports` maps, tsconfig layout, and dependency classification in a pnpm workspace.
 - [`changeset-releases`](skills/changeset-releases/SKILL.md): why a package didn't bump or publish, and what to check before you blame a cache.
@@ -272,7 +273,7 @@ or `/caddie-automate-me` in OpenCode.
 
 - [`comment-sicko`](agents/comment-sicko.md): deletes comments and flags suppressions. Spawned by `no-comments`.
 - [`issue-filer`](agents/issue-filer.md): formats a rough report into a real GitHub issue, checks for duplicates, obeys the repo's own templates, and creates it with `gh`. Spawned by `file-issue`.
-- [`code-simplifier`](agents/code-simplifier.md): tidies recently written code to house style (arrow functions, named exports, no nested ternaries, `const` everywhere) without changing behavior.
+- [`code-simplifier`](agents/code-simplifier.md): tidies recently written code to house style, as defined by `js-ts-style` and `typescript-best-practices`, without changing behavior.
 
 ## Hooks
 
@@ -282,6 +283,7 @@ Shipped in [`hooks/hooks.json`](hooks/hooks.json), mirrored for Codex in [`hooks
 - [`retired-skill-redirect.sh`](hooks/retired-skill-redirect.sh): redirects retired writing skills (`unslop`, `humanize-writing`, and `cro-metrics-writing`) to `ryan-voice-guide`.
 - [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
+- [`js-style-guard.sh`](hooks/js-style-guard.sh): fires after an edit that adds `var`, `.forEach`, an index `for` loop, CommonJS outside `.cjs`, loose equality other than `== null`, `any`, an unbraced body on the line after its condition, or a `return` with no blank line before it to a JS or TS file, and sends the model back to the `js-ts-style` rule. It reads only added lines, with strings and comments stripped.
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
 
