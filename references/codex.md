@@ -82,10 +82,10 @@ Codex loads `hooks/codex-hooks.json`, a copy of the shared hooks without Claude'
 `modules`, on hosts with plugin hooks enabled and trusted. It reports shell and unified-exec calls as `Bash`, with the command in
 `tool_input.command`. Patch calls report `apply_patch` with the patch in that same
 field and also match `Edit` and `Write`. The existing matchers therefore reach the
-git guard and suppression guard without a separate Codex hook configuration.
+git guard, suppression guard, and style guard without a separate Codex hook configuration.
 
-The git guard runs before execution. The suppression guard runs after execution
-and asks for a correction; it cannot undo the edit. The retired-skill redirect
+The git guard runs before execution. The suppression and style guards run after
+execution and ask for a correction; they cannot undo the edit. The retired-skill redirect
 requires Claude's `Skill` tool, so use the routing table above in Codex. Hooks do
 not cover every possible tool path or edits made through shell commands.
 

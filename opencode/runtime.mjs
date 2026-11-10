@@ -130,9 +130,16 @@ export const setupCaddie = async (ctx, root) => {
   })
   await ctx.tool.hook('execute.after', (event) => {
     if (event.status !== 'completed' || !['edit', 'write', 'patch'].includes(event.tool)) return
-    const reason = runGuard(root, directory, 'suppression-guard.sh', hookPayload(event.tool, event.input))
-    if (!reason) return
-    const feedback = `\n\nCaddie suppression guard (the edit already happened):\n${reason}`
+    const payload = hookPayload(event.tool, event.input)
+    const reasons = [
+      ['suppression guard', 'suppression-guard.sh'],
+      ['style guard', 'js-style-guard.sh'],
+    ].flatMap(([label, script]) => {
+      const reason = runGuard(root, directory, script, payload)
+      return reason ? [`Caddie ${label} (the edit already happened):\n${reason}`] : []
+    })
+    if (reasons.length === 0) return
+    const feedback = `\n\n${reasons.join('\n\n')}`
     if (typeof event.result.content === 'string') event.result.content += feedback
     else event.result.content = [...(event.result.content ?? []), { type: 'text', text: feedback }]
   })

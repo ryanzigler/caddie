@@ -61,12 +61,16 @@ class PackagingTests(unittest.TestCase):
     def test_shared_hook_commands_work_from_another_directory(self):
         hooks = json.loads((ROOT / "hooks/hooks.json").read_text())["hooks"]
         # Codex canonicalizes exec_command to Bash and aliases apply_patch to Edit/Write.
+        edit_aliases = ["apply_patch", "Edit", "Write"]
         cases = [
-            ("PreToolUse", "Bash", ["Bash"], {"command": "git stash"}, 2),
-            ("PreToolUse", "Bash", ["Bash"], {"command": "git status --short"}, 0),
-            ("PostToolUse", "apply_patch", ["apply_patch", "Edit", "Write"], {
+            ("PreToolUse", "Bash", ["Bash"], {"command": "git stash"}, [2]),
+            ("PreToolUse", "Bash", ["Bash"], {"command": "git status --short"}, [0]),
+            ("PostToolUse", "apply_patch", edit_aliases, {
                 "command": "*** Begin Patch\n*** Add File: a.ts\n+// @ts-ignore\n*** End Patch",
-            }, 2),
+            }, [2, 0]),
+            ("PostToolUse", "apply_patch", edit_aliases, {
+                "command": "*** Begin Patch\n*** Add File: a.ts\n+var x = 1;\n*** End Patch",
+            }, [0, 2]),
         ]
         with tempfile.TemporaryDirectory(prefix="caddie hook cwd ") as cwd:
             for event, tool, aliases, fields, expected in cases:
@@ -74,14 +78,13 @@ class PackagingTests(unittest.TestCase):
                     commands = [command for group in hooks[event]
                                 if any(re.search(group["matcher"], alias) for alias in aliases)
                                 for command in group["hooks"]]
-                    self.assertEqual(len(commands), 1)
-                    result = subprocess.run(
-                        ["bash", "-c", commands[0]["command"]], cwd=cwd,
+                    codes = [subprocess.run(
+                        ["bash", "-c", command["command"]], cwd=cwd,
                         env={**os.environ, "CLAUDE_PLUGIN_ROOT": str(ROOT)},
                         input=json.dumps({"tool_name": tool, "tool_input": fields}),
                         text=True, capture_output=True, check=False,
-                    )
-                    self.assertEqual(result.returncode, expected, result.stderr)
+                    ).returncode for command in commands]
+                    self.assertEqual(codes, expected)
 
 
 class HookTests(unittest.TestCase):
@@ -143,6 +146,140 @@ class HookTests(unittest.TestCase):
     def test_codex_multiple_files(self):
         patch = "*** Begin Patch\n*** Update File: a.ts\n@@\n-// @ts-ignore\n+call();\n*** Add File: b.ts\n+// @ts-expect-error\n*** End Patch"
         self.suppression({"tool_name": "apply_patch", "tool_input": {"command": patch}}, 2)
+
+    def style(self, payload, expected):
+        result = self.run_hook("js-style-guard.sh", payload)
+        self.assertEqual(result.returncode, expected, result.stderr)
+        return result
+
+    def test_style_violations_in_claude_edits(self):
+        for code, rule in [
+            ("var count = 0;", "var:"),
+            ("items.forEach((item) => use(item));", ".forEach:"),
+            ("for (let i = 0; i < items.length; i++) {}", "index for-loop:"),
+            ("const fs = require('node:fs');", "CommonJS:"),
+            ("module.exports = run;", "CommonJS:"),
+            ("if (left == right) {}", "loose equality:"),
+            ("if (left != right) {}", "loose equality:"),
+            ("const value = input as any;", "any:"),
+            ("const parse = (raw: any) => raw;", "any:"),
+        ]:
+            with self.subTest(code=code):
+                result = self.style({"tool_name": "Edit", "tool_input": {
+                    "file_path": "src/example.ts", "new_string": code,
+                }}, 2)
+                self.assertIn(f"src/example.ts: {rule}", result.stderr)
+
+    def test_style_clean_code_strings_and_comments(self):
+        clean = "\n".join([
+            "const total = items.length;",
+            "if (value == null || null != other) {}",
+            "if (left === right && left !== other && left <= right) {}",
+            "for (const [index, item] of items.entries()) {}",
+            "const variable = 'var x == y as any; items.forEach(';",
+            'const message = "require(\\"fs\\") != that";',
+            "const note = `module.exports == ${name}`;",
+            "// var legacy = 1; items.forEach(run);",
+            " * if (a == b) {}",
+            "const url = 'https://example.com'; // left == right",
+            "const parse = (raw: unknown) => raw;",
+            "const company = anyValue;",
+        ])
+        self.style({"tool_name": "Write", "tool_input": {"file_path": "a.ts", "content": clean}}, 0)
+
+    def test_style_file_types(self):
+        for path, code, expected in [
+            ("README.md", "var x = 1;", 0),
+            ("notes.txt", "items.forEach(run);", 0),
+            ("config.cjs", "const fs = require('node:fs');\nmodule.exports = fs;", 0),
+            ("script.js", "const value = input as any;", 0),
+            ("component.tsx", "list.forEach(render);", 2),
+            ("module.mjs", "module.exports = run;", 2),
+            ("types.mts", "const value = input as any;", 2),
+            ("", "var x = 1;", 0),
+        ]:
+            with self.subTest(path=path):
+                self.style({"tool_name": "Write", "tool_input": {"file_path": path, "content": code}}, expected)
+
+    def test_style_braces_and_return_spacing(self):
+        for code, expected in [
+            ("if (!user) return;", 0),
+            ("if (done) {\n  return;\n}", 0),
+            ("if (route === undefined)\n  throw new Error('missing');", 2),
+            ("} else if (ready)\n  go();", 2),
+            ("} else\n  stop();", 2),
+            ("for (const [k, v] of body) url.set(k, v);", 0),
+            ("for (const item of items)\n  use(item);", 2),
+            ("while (queue.length > 0)\n  queue.pop();", 2),
+            ("const total = sum();\nreturn total;", 2),
+            ("if (ready) {\n  go();\n}\nreturn next;", 2),
+            ("const total = sum();\n\nreturn total;", 0),
+            ("const run = () => {\n  return 1;\n};", 0),
+            ("switch (kind) {\n  case 'a':\n    return 1;\n}", 0),
+            ("// explain why\nreturn value;", 0),
+            ("const ok = check(\n  value,\n);\n\nreturn ok;", 0),
+        ]:
+            with self.subTest(code=code):
+                self.style({"tool_name": "Write", "tool_input": {"file_path": "a.ts", "content": code}}, expected)
+
+    def test_style_return_spacing_uses_patch_context(self):
+        for context, expected in [(" const total = sum();", 2), (" ", 0), (" if (ready) {", 0)]:
+            with self.subTest(context=context):
+                patch = f"*** Begin Patch\n*** Update File: a.ts\n@@\n{context}\n+return total;\n*** End Patch"
+                self.style({"tool_name": "apply_patch", "tool_input": {"command": patch}}, expected)
+        patch = "*** Begin Patch\n*** Update File: a.ts\n@@\n const total = sum();\n@@\n+return total;\n*** End Patch"
+        self.style({"tool_name": "apply_patch", "tool_input": {"command": patch}}, 0)
+        self.style({"tool_name": "MultiEdit", "tool_input": {"file_path": "a.ts", "edits": [
+            {"new_string": "const total = sum();"}, {"new_string": "return total;"},
+        ]}}, 0)
+
+    def test_style_ryans_fake_graph_examples(self):
+        correct = (ROOT / "tests/fixtures/fake-graph.ts.txt").read_text()
+        self.style({"tool_name": "Write", "tool_input": {"file_path": "fake-graph.ts", "content": correct}}, 0)
+        unbraced = (correct
+                    .replace("URLSearchParams) {\n      for (const [k, v] of init.body) {\n        url.searchParams.set(k, v);\n      }\n    }",
+                             "URLSearchParams)\n      for (const [k, v] of init.body) url.searchParams.set(k, v);")
+                    .replace("undefined) {\n      throw new Error(`fake graph: no route for ${method} ${path}`);\n    }",
+                             "undefined)\n      throw new Error(`fake graph: no route for ${method} ${path}`);"))
+        self.assertNotEqual(unbraced, correct)
+        result = self.style({"tool_name": "Write", "tool_input": {"file_path": "fake-graph.ts", "content": unbraced}}, 2)
+        self.assertEqual(result.stderr.count("unbraced body"), 2)
+        cramped = re.sub(r"\n\n(?=\s*(return|const route|const body|calls|if|const path|const fetchImpl))", "\n", correct)
+        result = self.style({"tool_name": "Write", "tool_input": {"file_path": "fake-graph.ts", "content": cramped}}, 2)
+        self.assertEqual(result.stderr.count("return right after a statement"), 2)
+
+    def test_style_multiedit_and_removed_code(self):
+        self.style({"tool_name": "MultiEdit", "tool_input": {
+            "file_path": "a.ts", "edits": [{"old_string": "x", "new_string": "var x = 1;"}],
+        }}, 2)
+        self.style({"tool_name": "Edit", "tool_input": {
+            "file_path": "a.ts", "old_string": "var x = 1;", "new_string": "const x = 1;",
+        }}, 0)
+
+    def test_style_codex_patches_check_added_lines_per_file(self):
+        patch = "\n".join([
+            "*** Begin Patch",
+            "*** Update File: a.ts",
+            "@@",
+            "-var removed = 1;",
+            " var context = 2;",
+            "+const added = 1;",
+            "*** Add File: notes.md",
+            "+var prose = 1;",
+            "*** Add File: b.mjs",
+            "+module.exports = run;",
+            "*** Update File: c.txt",
+            "*** Move to: c.js",
+            "@@",
+            "+var moved = 1;",
+            "*** Delete File: d.ts",
+            "*** End Patch",
+        ])
+        result = self.style({"tool_name": "apply_patch", "tool_input": {"command": patch}}, 2)
+        self.assertIn("b.mjs: CommonJS:", result.stderr)
+        self.assertIn("c.js: var:", result.stderr)
+        self.assertNotIn("a.ts", result.stderr)
+        self.assertNotIn("notes.md", result.stderr)
 
     def test_session_start_prints_user_instructions_from_another_directory(self):
         with tempfile.TemporaryDirectory() as cwd:

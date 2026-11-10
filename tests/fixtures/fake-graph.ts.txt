@@ -1,0 +1,46 @@
+export const fakeGraph = (
+  routes: Record<string, Route>,
+  headers: Record<string, string> = {},
+): FakeGraph => {
+  const calls: FakeGraph['calls'] = [];
+
+  const fetchImpl = async (
+    input: string | URL | Request,
+    init?: RequestInit,
+  ) => {
+    const url = new URL(input instanceof Request ? input.url : input);
+    const method = init?.method ?? 'GET';
+
+    if (init?.body instanceof URLSearchParams) {
+      for (const [k, v] of init.body) {
+        url.searchParams.set(k, v);
+      }
+    }
+
+    const path = url.pathname.replace(/^\/v\d+\.\d+\//, '');
+    const token =
+      new Headers(init?.headers).get('authorization')?.replace('Bearer ', '')
+      ?? '';
+
+    calls.push({
+      method,
+      params: Object.fromEntries(url.searchParams),
+      path,
+      token,
+    });
+
+    const route = routes[`${method} ${path}`] ?? routes[path];
+
+    if (route === undefined) {
+      throw new Error(`fake graph: no route for ${method} ${path}`);
+    }
+
+    const body = typeof route === 'function' ? route(url, token) : route;
+
+    return new Response(JSON.stringify(body), {
+      headers: { 'content-type': 'application/json', ...headers },
+    });
+  };
+
+  return { calls, fetch: fetchImpl };
+};
