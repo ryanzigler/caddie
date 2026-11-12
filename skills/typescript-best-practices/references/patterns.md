@@ -7,19 +7,20 @@ Code examples for each rule in `SKILL.md`. The underlying principles are languag
 Brand primitives so they can't be mixed up. Validate once at creation; downstream code trusts the type.
 
 ```ts
-type AgentId = string & { readonly __brand: "AgentId" };
+type AgentId = string & { readonly __brand: 'AgentId' };
 
-function parseAgentId(input: string): AgentId {
+const parseAgentId = (input: string) => {
   if (!isUUID(input)) throw new Error(`Invalid agent id: ${input}`);
-  return input as AgentId;
-}
 
-function focusAgent(id: AgentId): void {
+  return input as AgentId; // brand constructor: the UUID check above is the proof
+};
+
+const focusAgent = (id: AgentId) => {
   /* input is trusted */
-}
+};
 ```
 
-Match the `readonly __brand: 'X'` shape; don't invent a new convention.
+Match the `readonly __brand: 'X'` shape; don't invent a new convention. The constructor is the one place our own code casts.
 
 ## Discriminated unions
 
@@ -27,13 +28,17 @@ If a bug forces the question "wait, can this combination actually happen?", the 
 
 ```ts
 // Don't. Boolean + optionals lets contradictory states exist.
-type DiffState = { loading: boolean; diff?: GitDiff; error?: string };
+interface DiffState {
+  diff?: GitDiff;
+  error?: string;
+  loading: boolean;
+}
 
 // Do. Only valid states exist.
 type DiffState =
-  | { kind: "loading" }
-  | { kind: "ready"; diff: GitDiff }
-  | { kind: "error"; error: string };
+  | { kind: 'loading' }
+  | { diff: GitDiff; kind: 'ready' }
+  | { error: string; kind: 'error' };
 ```
 
 Pick one discriminant name (`kind`, `type`, `tag`) and stick to it.
@@ -48,24 +53,24 @@ Non-empty, via a variadic tuple:
 type NonEmpty<T> = [T, ...T[]];
 
 // Don't: T[] plus a length check every caller must repeat
-function pickWinner(entries: string[]): string {
-  if (entries.length === 0) throw new Error("no entries");
+const pickWinner = (entries: string[]) => {
+  if (entries.length === 0) throw new Error('no entries');
+
   return entries[Math.floor(Math.random() * entries.length)];
-}
+};
 
 // Do: an empty value of the type can't exist
-function pickWinner(entries: NonEmpty<string>): string {
-  return entries[Math.floor(Math.random() * entries.length)];
-}
+const pickWinner = (entries: NonEmpty<string>) =>
+  entries[Math.floor(Math.random() * entries.length)];
 ```
 
 Where a plain `T[]` arrives, narrow once with a guard. The fact then travels in the type:
 
 ```ts
-const isNonEmpty = <T>(arr: T[]): arr is NonEmpty<T> => arr.length > 0;
+const isNonEmpty = <T>(items: T[]): items is NonEmpty<T> => items.length > 0;
 ```
 
-Even length, as pairs. TypeScript has no refinement types (no `arr.length % 2 === 0` at the type level); you don't need one:
+Even length, as pairs. TypeScript has no refinement types (no `items.length % 2 === 0` at the type level); you don't need one:
 
 ```ts
 type Pairs<T> = [T, T][];
@@ -75,10 +80,16 @@ A time range, as start plus duration:
 
 ```ts
 // Don't: a comment holds the invariant
-type TimeRange = { start: Date; end: Date }; // start <= end
+interface TimeRange {
+  end: Date; // start <= end
+  start: Date;
+}
 
 // Do: a negative range can't be written; derive end when needed
-type TimeRange = { start: Date; durationMs: number };
+interface TimeRange {
+  durationMs: number;
+  start: Date;
+}
 ```
 
 Keep `durationMs` a plain number. Brand it (per Branded types) only if a raw number could be passed where a duration is expected, not by reflex. A `Pairs<T>` is an even-length list under the interpretation you give it, the same way `{ start, durationMs }` is a range. Pick the representation that makes the bad state unconstructable, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
@@ -88,24 +99,41 @@ Keep `durationMs` a plain number. Brand it (per Branded types) only if a raw num
 Don't strengthen everything. Keep `T[]` when every operation on it is total:
 
 ```ts
-const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
+const sum = (values: number[]) => values.reduce((total, value) => total + value, 0); // [] is 0, fine
 ```
 
-Strengthen when the loose type forces a lie at a use site. The tells are `!`, `arr[0] as T`, and a "should never happen" throw:
+Strengthen when the loose type forces a lie at a use site. The tells are `!`, `items[0] as T`, and a "should never happen" throw:
 
 ```ts
 // Don't: partiality smuggled past the compiler
-function newestSession(sessions: Session[]): Session {
-  return sessions.at(0)!;
-}
+const newestSession = (sessions: Session[]) => sessions.at(0)!;
 
 // Do: strengthen the input; the assertion disappears
-function newestSession(sessions: NonEmpty<Session>): Session {
-  return sessions[0];
-}
+const newestSession = (sessions: NonEmpty<Session>) => sessions[0];
 ```
 
 Weakening the result to `Session | undefined` is the other total signature. Either way the empty case lands at the call site, the one place that knows what empty means.
+
+## Inferred return types
+
+The compiler already knows what a function returns. An annotation restates it, drifts when the body changes, and can widen what callers see.
+
+```ts
+// Don't. Restates the body and widens 'admin' | 'guest' to string.
+const roleFor = (user: User): string => (user.isAdmin ? 'admin' : 'guest');
+
+// Do. Inferred as 'admin' | 'guest'.
+const roleFor = (user: User) => (user.isAdmin ? 'admin' : 'guest');
+```
+
+Annotate only where the compiler needs it:
+
+- A type predicate (`items is NonEmpty<T>`) or an assertion function (`asserts value is User`). The annotation is the feature.
+- An overload signature.
+- Recursion the compiler reports it cannot infer.
+- A project with `isolatedDeclarations` on, which requires annotations on exports.
+
+When inference comes out too wide, fix the returned value first: `as const` for literals, `satisfies` to check a shape without widening it.
 
 ## `unknown` over `any`
 
@@ -113,65 +141,86 @@ Weakening the result to `Session | undefined` is the other total signature. Eith
 
 ```ts
 // Don't
-function handle(input: any) {
-  return input.foo.bar;
-}
+const handle = (input: any) => input.foo.bar;
 
 // Do
-function handle(input: unknown) {
-  if (typeof input === "object" && input !== null && "foo" in input) {
+const handle = (input: unknown) => {
+  if (typeof input === 'object' && input !== null && 'foo' in input) {
     // narrowed; compiler verifies access
   }
-}
+};
 ```
 
 External sources include RPC payloads, `JSON.parse`, `postMessage`, IPC, file contents, environment variables, database results.
 
-## No unvalidated casts
+## No casts on our types
 
-Every unearned `as` is a potential runtime crash. Earn it: validate first, so the cast records a fact that has just been checked.
+We declare every type in this codebase, so the type of our own values is never a mystery. A cast or non-null assertion on one of them is a smell: it says a type upstream is wrong or too loose. Fix that type instead of asserting past it.
 
 ```ts
-// Don't
-const user = data as User;
+// Don't. Our own reducer, asserting what its own types should say.
+const session = state.sessions.find((session) => session.id === id) as Session;
+const title = (event.payload as RenamePayload).title;
 
-// Do. Earn the cast at the boundary.
-function parseUser(data: unknown): User {
-  if (typeof data !== "object" || data === null) {
-    throw new Error("expected object");
-  }
-  if (!("id" in data) || typeof (data as Record<string, unknown>).id !== "string") {
-    throw new Error("expected id");
-  }
-  // ... validate all fields
-  return data as User; // earned: full validation directly above
+// Do. Handle the case the type reports, and model the payload as a variant.
+const session = state.sessions.find((session) => session.id === id);
+
+if (session === undefined) return state;
+
+if (event.kind === 'rename') {
+  const { title } = event.payload; // narrowed by the discriminant
 }
 ```
 
-When refactoring an `as` out of existing code, identify why TypeScript can't infer:
+When an `as` or `!` shows up on our own code, find why the compiler doesn't already know:
 
 - Missing discriminant: add one, switch to a discriminated union.
-- Overly wide source type (e.g. `Record<string, unknown>`): narrow it.
-- Untyped boundary: add a parse function or schema.
+- Overly wide source type (e.g. `Record<string, unknown>`): narrow it where it is declared.
+- An annotation that widened a value: remove it and let inference keep the narrow type.
 - Genuinely inexpressible: use a branded type or `satisfies`.
 
-A small number of casts are genuinely load-bearing: the branded-type constructor above, a `satisfies`-adjacent widening, a third-party type that is wrong at the source. Keep those, and keep the reason next to them in one line. What is not acceptable is a cast added to make a type error go away before the error was understood. When you find one, treat the error as the finding and fix its cause.
+Casts belong only at the edge with code we don't control, and in the brand constructor above:
+
+- A third-party type that is wrong at its source.
+- A DOM API typed wider than the markup we wrote (`querySelector` returns `Element`).
+- External data, and only after it has been validated. Prefer building the domain value from narrowed fields so no cast is needed:
+
+```ts
+const parseUser = (data: unknown) => {
+  if (typeof data !== 'object' || data === null) {
+    throw new Error('expected object');
+  }
+
+  if (!('id' in data) || typeof data.id !== 'string') {
+    throw new Error('expected id');
+  }
+
+  if (!('name' in data) || typeof data.name !== 'string') {
+    throw new Error('expected name');
+  }
+
+  return { id: data.id, name: data.name } satisfies User;
+};
+```
+
+`satisfies User` is a check, not a cast: the compiler verifies the object against `User` without an annotation on the function. Keep each remaining cast's reason next to it in one line. A cast added to make a type error go away before the error was understood is never acceptable; treat the error as the finding and fix its cause. `as const` is not a cast and is always fine.
 
 ## Narrowing hierarchy
 
 From best to last-resort:
 
 1. **Discriminated union switch / if.** Compiler narrows automatically.
-2. **`in` operator.** `"key" in obj` narrows to variants containing that key.
-3. **`typeof` / `instanceof`.** For primitives and class instances.
+2. **`in` operator.** `'key' in obj` narrows to variants containing that key.
+3. **`typeof` / `instanceof`.** For primitives and platform or library class instances.
 4. **User-defined type guard.** When the above aren't enough.
-5. **`as` cast.** Only after validation.
+5. **`as` cast.** Only at the edge of code we don't control, after validation.
 
 ```ts
-function area(s: Shape): number {
-  if ("radius" in s) return Math.PI * s.radius ** 2; // narrowed to circle
-  return s.width * s.height; // narrowed to rect
-}
+const area = (shape: Shape) => {
+  if ('radius' in shape) return Math.PI * shape.radius ** 2; // narrowed to circle
+
+  return shape.width * shape.height; // narrowed to rect
+};
 ```
 
 ## Type guards
@@ -179,9 +228,8 @@ function area(s: Shape): number {
 A guard must actually verify the claim. A lying guard is worse than `as` because the bug hides behind a name that says it's safe.
 
 ```ts
-function isCircle(s: Shape): s is Shape & { kind: "circle" } {
-  return s.kind === "circle";
-}
+const isCircle = (shape: Shape): shape is Shape & { kind: 'circle' } =>
+  shape.kind === 'circle';
 ```
 
 Prefer discriminant narrowing when possible. The guard adds a layer the reader has to follow.
@@ -192,34 +240,35 @@ In default arms, assign the discriminant to a `never`-typed local. The compiler 
 
 ```ts
 // Value-returning switch
-function area(s: Shape): number {
-  switch (s.kind) {
-    case "circle":
-      return Math.PI * s.radius ** 2;
-    case "rect":
-      return s.width * s.height;
+const area = (shape: Shape) => {
+  switch (shape.kind) {
+    case 'circle':
+      return Math.PI * shape.radius ** 2;
+    case 'rect':
+      return shape.width * shape.height;
     default: {
-      const _exhaustive: never = s;
+      const _exhaustive: never = shape;
+
       return _exhaustive;
     }
   }
-}
+};
 
 // Void switch
-function handle(s: Shape): void {
-  switch (s.kind) {
-    case "circle":
-      drawCircle(s);
+const draw = (shape: Shape) => {
+  switch (shape.kind) {
+    case 'circle':
+      drawCircle(shape);
       break;
-    case "rect":
-      drawRect(s);
+    case 'rect':
+      drawRect(shape);
       break;
     default: {
-      const _exhaustive: never = s;
+      const _exhaustive: never = shape;
       void _exhaustive;
     }
   }
-}
+};
 ```
 
 Return-style in value-returning switches; void-style in statement switches.
@@ -229,12 +278,12 @@ Return-style in value-returning switches; void-style in statement switches.
 `satisfies` validates without widening literal types.
 
 ```ts
-// Don't. Widens, loses literal types.
-const config = { theme: "dark", cols: 3 } as Config;
+// Don't. Widens, loses literal types, and skips excess-property checks.
+const config = { cols: 3, theme: 'dark' } as Config;
 
 // Do. Validates AND preserves literal types.
-const config = { theme: "dark", cols: 3 } satisfies Config;
-// config.theme is "dark" (literal), not string
+const config = { cols: 3, theme: 'dark' } satisfies Config;
+// config.theme is 'dark' (literal), not string
 ```
 
 ## Boundary validation
@@ -251,19 +300,21 @@ When a `.proto`, OpenAPI spec, GraphQL schema, or database migration already def
 
 ```ts
 // Don't. Duplicate shape, drifts when the schema changes.
-type CheckSummary = {
-  totalCount: number;
+interface CheckSummary {
   checks: { name: string; status: string }[];
-};
-function renderChecks(s: CheckSummary) {
-  /* ... */
+  totalCount: number;
 }
 
-// Do. Derive from the generated schema type.
-import type { ChecksMessage } from "<generated module>";
-function renderChecks(s: Pick<ChecksMessage, "totalCount" | "checks">) {
+const renderChecks = (summary: CheckSummary) => {
   /* ... */
-}
+};
+
+// Do. Derive from the generated schema type.
+import type { ChecksMessage } from '<generated module>';
+
+const renderChecks = (summary: Pick<ChecksMessage, 'checks' | 'totalCount'>) => {
+  /* ... */
+};
 ```
 
 Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
@@ -275,21 +326,21 @@ A preference, not a law. It earns its keep on three or more parameters, and most
 ```ts
 // Don't. Swap two args, still compiles.
 openFile(uri, {
-  startLineNumber: 10,
-  startColumn: 1,
-  endLineNumber: 10,
   endColumn: 1,
+  endLineNumber: 10,
+  startColumn: 1,
+  startLineNumber: 10,
 });
 
 // Do. Order-independent, self-documenting.
 openFile({
-  uri,
   selection: {
-    startLineNumber: 10,
-    startColumn: 1,
-    endLineNumber: 10,
     endColumn: 1,
+    endLineNumber: 10,
+    startColumn: 1,
+    startLineNumber: 10,
   },
+  uri,
 });
 ```
 
