@@ -49,8 +49,9 @@ Pass the absolute agent-file path so the child can resolve links relative to it.
 For `issue-filer`, also pass the absolute path to
 [fallback templates](../skills/file-issue/references/templates.md).
 Do not assume an unrelated registered agent with the same name implements Caddie's
-instructions. Claude model aliases such as `opus` stay in Claude frontmatter;
-Codex uses the current host's model defaults unless the user requests a model.
+instructions. Claude model aliases such as `opus` stay in Claude frontmatter.
+Choose each Codex child's model from the Sol, Terra, and Luna tiers in the
+session's subagent model instructions, not from those aliases or the host default.
 
 Carry the same scope, write restrictions, evidence requirements, and return contract
 into each child. Pass this reference when a child receives instructions containing
