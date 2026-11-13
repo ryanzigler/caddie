@@ -152,11 +152,13 @@ that does not show up is usually a stale install, not a broken skill.
 
 ## Keeping things in sync
 
-When a skill, agent, hook, mod, or MCP server is added, renamed, or removed:
+When a skill, agent, hook, mod, or MCP server is added, renamed, or removed, update
+`README.md`, linking each name to its file under its section. An adapted skill needs its
+upstream link there.
 
-- Update `README.md`, linking each name to its file under its section. An adapted skill
-  needs its upstream link there.
-- Bump `version` in all four places: `.claude-plugin/plugin.json`,
-  `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, and `package.json`.
-  The Codex version may add a local `+codex.<suffix>` cachebuster, but its base must
-  match the others.
+Bump `version` in every PR that changes anything the plugin ships, including an edit to
+an existing skill's prose. Claude Code caches an installed plugin by version, so a merge
+without a bump never reaches an installed copy. Bump all four places together:
+`.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`,
+`.codex-plugin/plugin.json`, and `package.json`. The Codex version may add a local
+`+codex.<suffix>` cachebuster, but its base must match the others.
