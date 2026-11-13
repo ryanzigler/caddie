@@ -1,6 +1,6 @@
 ---
 name: js-ts-style
-description: Ryan's JavaScript and TypeScript code style — declarations, functions, exports, imports, control flow, naming, React components, whitespace, and formatting. Use whenever writing, editing, or reviewing any .js, .jsx, .mjs, .cjs, .ts, .tsx, .mts, or .cts file, when scaffolding a new JS/TS project, and when asked to match "my style", "house style", or "how I write code".
+description: Ryan's JavaScript and TypeScript code style — declarations, functions, exports, imports, file size and cohesion, control flow, naming, comments, React components, whitespace, and formatting. Use whenever writing, editing, or reviewing any .js, .jsx, .mjs, .cjs, .ts, .tsx, .mts, or .cts file, when scaffolding a new JS/TS project, and when asked to match "my style", "house style", or "how I write code".
 ---
 
 # JS/TS style
@@ -23,7 +23,8 @@ These rules hold whether a project uses any formatter or linter or none. Write c
 | Functions         | Arrow functions assigned to `const` for module-level helpers, components, and callbacks. `function` only when it is required: generators, overloads, or a `this` binding.                                                |
 | Classes | No classes. Write functions over plain data: state is a plain object typed by an `interface`, behavior is a function that takes it, private state lives in a closure, and variants are a discriminated union. Use a class only when code outside the project requires one, such as a framework base to extend (a custom element, a React error boundary) or a library that instantiates what you pass it. |
 | Arrow bodies      | Concise body when the function is a single expression; braces and `return` only when there are statements.                                                                                                                |
-| Modules           | ES modules only, never `require` or `module.exports` outside a `.cjs` file. Named exports. A default export only where a framework or tool demands one (Storybook meta, framework route files, tool config files).       |
+| Modules           | ES modules only, never `require` or `module.exports` outside a `.cjs` file. Named exports only. A default export only where a framework or tool requires one (Storybook meta, framework route files, tool config files). |
+| Files | One file holds one module, component, or responsibility. Split by cohesion, not by count: when a file starts doing a second job, the second job gets its own file. Aim for 200 lines or fewer; past 200, check for a second responsibility before adding more. Never let a file reach 500 lines: split it along a responsibility boundary before the edit that would cross the line. |
 | Imports           | `import type { … }` when every specifier is a type, inline `type` specifiers when mixed. Use the project's path alias (`@/…`) over `../../`. Sort by module path: packages before aliased and relative paths.                                                  |
 | Guards            | Early return for the empty, error, and not-found cases, then the main path unindented. No `else` after `return`. Collapse nested `if`s that share no other statements.                                                  |
 | Braces            | Brace every `if`, `else`, `for`, and `while` body. The one exception is a whole statement on a single line, like `if (!user) return;`. A body on the line after its condition always gets braces, and so does a loop nested inside one. |
@@ -37,6 +38,16 @@ These rules hold whether a project uses any formatter or linter or none. Write c
 | Complexity        | Keep functions shallow. When a function needs a comment to explain its flow, or nests past two levels, extract a named helper.                                                                                             |
 | React             | Components are named arrow `const` exports. Destructure props in the signature, typed by an `interface XProps`. Return `null` early for the empty state. Keys come from stable data, never the array index.             |
 | Enums             | No `enum`. Use a string-literal union, or an `as const` object when the values are needed at runtime.                                                                                                                      |
+
+## Write it finished
+
+The first draft is the final draft. Write what `code-simplifier` and `no-comments` would leave behind, so neither needs a second turn:
+
+- **No comments.** A name, a type, or an extracted helper says it instead. Keep only a license header, a doc comment on a public API, an issue link for a constraint the code cannot express, or a note on behavior forced by a dependency, platform, or protocol outside the project.
+- **No suppressions.** Do not add `eslint-disable`, `biome-ignore`, `@ts-ignore`, `@ts-expect-error`, or `@ts-nocheck`; fix the cause. The only exceptions are a purely stylistic or faulty lint rule and a genuinely wrong third-party type, each with one line saying which. If the cause is outside your scope, stop and tell the user the rule and the cause.
+- **No dead weight.** No commented-out code, unused parameters, exports nothing imports, wrappers that only forward, or abstractions with one caller and no second on the way.
+- **No defense against the impossible.** Guard at the boundary where data enters; inside it, trust the types.
+- **Clarity over brevity.** Simpler means fewer concepts, not fewer characters. Do not pack logic into dense one-liners.
 
 ## Whitespace
 
