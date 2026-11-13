@@ -1,6 +1,6 @@
 {
   "name": "@ryanzigler/caddie",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Caddie's shared engineering workflows for OpenCode",
   "type": "module",
   "exports": {
