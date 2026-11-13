@@ -210,7 +210,7 @@ or `/caddie-automate-me` in OpenCode.
 
 - [`principle-type-system-discipline`](skills/principle-type-system-discipline/SKILL.md): design types so illegal states can't be represented.
 - [`typescript-best-practices`](skills/typescript-best-practices/SKILL.md): the same discipline in concrete TypeScript syntax. Fires on any `.ts`, `.tsx`, or `.mts` edit.
-- [`js-ts-style`](skills/js-ts-style/SKILL.md): Ryan's JS/TS style for declarations, functions, exports, imports, control flow, naming, React, whitespace, and formatting, inferred from his own code. It holds with any formatter or linter, or none; a tool the project already runs wins on what it enforces. Fires on any JS or TS edit.
+- [`js-ts-style`](skills/js-ts-style/SKILL.md): Ryan's JS/TS style for declarations, functions, exports, imports, file size and cohesion, control flow, naming, comments, React, whitespace, and formatting, inferred from his own code. It also has the first draft follow `code-simplifier` and `no-comments`, so they rarely need a second pass. It holds with any formatter or linter, or none; a tool the project already runs wins on what it enforces. Fires on any JS or TS edit.
 - [`code-simplifier`](skills/code-simplifier/SKILL.md): delegates a scoped cleanup to the shared code-simplifier agent, preserving behavior.
 - [`workspace-packages`](skills/workspace-packages/SKILL.md): entrypoints, `exports` maps, tsconfig layout, and dependency classification in a pnpm workspace.
 - [`changeset-releases`](skills/changeset-releases/SKILL.md): why a package didn't bump or publish, and what to check before you blame a cache.
