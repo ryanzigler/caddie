@@ -76,7 +76,7 @@ git log --oneline --all --grep '<package-name>'
 
 - **Squash-merge flatlands.** If the repo squashes PRs, individual branch commits are gone. Fall back to the PR body and comments.
 - **Misleading commit messages.** "Small refactor" sometimes hides an intentional behavior change. Read the diff, not the message.
-- **Cargo-culted patterns.** The author may have copied a pattern without understanding it. If the pattern originated earlier in the codebase, investigate *that* commit instead.
+- **Cargo-culted patterns.** The author may have copied a pattern without understanding it. If the pattern originated earlier in the codebase, investigate _that_ commit instead.
 - **Bot commits.** Dependabot, Renovate, changesets release commits, and automated backports usually carry no motivation. Skip them when hunting intent, but note that a release commit's changeset body may not be automated.
 - **Treating code as evidence of intent.** The code is not evidence for why it exists. Evidence comes from messages, PRs, comments, tests, and docs. Never cite "the function is named X" as evidence of intent.
 

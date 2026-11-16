@@ -99,7 +99,8 @@ Keep `durationMs` a plain number. Brand it (per Branded types) only if a raw num
 Don't strengthen everything. Keep `T[]` when every operation on it is total:
 
 ```ts
-const sum = (values: number[]) => values.reduce((total, value) => total + value, 0); // [] is 0, fine
+const sum = (values: number[]) =>
+  values.reduce((total, value) => total + value, 0); // [] is 0, fine
 ```
 
 Strengthen when the loose type forces a lie at a use site. The tells are `!`, `items[0] as T`, and a "should never happen" throw:
@@ -312,7 +313,9 @@ const renderChecks = (summary: CheckSummary) => {
 // Do. Derive from the generated schema type.
 import type { ChecksMessage } from '<generated module>';
 
-const renderChecks = (summary: Pick<ChecksMessage, 'checks' | 'totalCount'>) => {
+const renderChecks = (
+  summary: Pick<ChecksMessage, 'checks' | 'totalCount'>,
+) => {
   /* ... */
 };
 ```

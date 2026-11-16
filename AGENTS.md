@@ -53,7 +53,7 @@ both payload shapes: Codex reports shell calls as `Bash` and patches as `apply_p
 Test one by piping a payload into it:
 `printf '%s' '{"tool_input":{"command":"git stash"}}' | hooks/destructive-git-guard.sh`.
 Use `printf`, not `echo`: zsh's `echo` turns `\n` into a real newline and the JSON stops
-parsing. `retired-skill-redirect.sh` and the `.tsx` mods are Claude-only. OpenCode
+parsing. The `.tsx` mods are Claude-only. OpenCode
 translates tool payloads in its own runtime; keep that separate from the Claude and
 Codex hooks.
 

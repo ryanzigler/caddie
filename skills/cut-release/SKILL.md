@@ -58,8 +58,8 @@ For each package with no pending changeset and not in `ignore`, write one direct
 
 ```md
 ---
-'@scope/name': minor
----
+
+## '@scope/name': minor
 
 What changed, from the consumer's point of view.
 ```

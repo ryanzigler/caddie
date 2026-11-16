@@ -1,15 +1,21 @@
 {
-  "name": "@ryanzigler/caddie",
-  "version": "0.15.0",
   "description": "Caddie's shared engineering workflows for OpenCode",
-  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "2.6.7"
+  },
   "exports": {
     ".": "./opencode/plugin.js"
   },
   "files": ["opencode", "skills", "agents", "references", "hooks", "LICENSE"],
+  "license": "MIT",
+  "name": "@ryanzigler/caddie",
   "repository": {
     "type": "git",
     "url": "https://github.com/ryanzigler/caddie.git"
   },
-  "license": "MIT"
+  "scripts": {
+    "check": "biome check --fix"
+  },
+  "type": "module",
+  "version": "0.15.0"
 }

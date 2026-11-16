@@ -24,11 +24,11 @@ You are operating within a constrained context window and strict system prompts.
 
 When you spawn a subagent, set its model explicitly. Use only the newest release of the three model tiers your host offers, and never an older version, another family, or the host default:
 
-| Tier | Claude Code | Codex | Use for |
-| --- | --- | --- | --- |
-| Deep | Opus | Sol | Architecture and planning, root-causing subtle bugs, code review, security analysis, ambiguous requirements, and any task where a wrong answer is expensive or hard to detect. |
-| Standard | Sonnet | Terra | Well-specified implementation, multi-file edits against a clear plan, writing tests, and focused research. |
-| Light | Haiku | Luna | Read-only search and exploration, lookups, summarizing supplied material, and mechanical edits that need no judgment. |
+| Tier     | Claude Code | Codex | Use for                                                                                                                                                                        |
+| -------- | ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Deep     | Opus        | Sol   | Architecture and planning, root-causing subtle bugs, code review, security analysis, ambiguous requirements, and any task where a wrong answer is expensive or hard to detect. |
+| Standard | Sonnet      | Terra | Well-specified implementation, multi-file edits against a clear plan, writing tests, and focused research.                                                                     |
+| Light    | Haiku       | Luna  | Read-only search and exploration, lookups, summarizing supplied material, and mechanical edits that need no judgment.                                                          |
 
 As of November 2026 the newest releases are Claude Opus 5.5, Sonnet 5.5, and Haiku 5.5, and GPT-6.1-Sol, GPT-6.1-Terra, and GPT-6-Luna. A newer release in a tier replaces the one named here; check the host's model list rather than trusting these version numbers.
 

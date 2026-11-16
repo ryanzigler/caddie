@@ -7,7 +7,6 @@ Thumbs.db
 *.swo
 *~
 .idea/
-.vscode/
 
 # Environment files
 .env

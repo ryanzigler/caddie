@@ -8,8 +8,8 @@ description: Diagnose and drive changesets-based releases in a pnpm workspace. U
 This skill diagnoses. To drive a release from pending changes to a verified publish, use
 `cut-release`.
 
-Two questions get confused constantly: *did the version bump happen* and *did the publish
-happen*. They fail separately, for different reasons, in different jobs. Establish which
+Two questions get confused constantly: _did the version bump happen_ and _did the publish
+happen_. They fail separately, for different reasons, in different jobs. Establish which
 one you are looking at before proposing a fix.
 
 ## Never answer from the package's `private` flag alone
@@ -24,14 +24,14 @@ the change.
 
 Keys that change the answer:
 
-| Key | Effect |
-|---|---|
-| `fixed` | Listed packages always release together at the same version. A changeset for any member bumps all members. |
-| `linked` | Listed packages share a version line but only bump when individually changed. |
-| `ignore` | Listed packages never release. A changeset naming one does nothing. |
-| `privatePackages` | `version` and `tag` are independent. `{ version: true, tag: false }` means private packages get versioned but not tagged. |
-| `updateInternalDependencies` | Which bump a dependent gets when an internal dependency bumps. |
-| `access` / `publishConfig.registry` | Where publishing goes, and therefore which auth failures are possible. |
+| Key                                 | Effect                                                                                                                    |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `fixed`                             | Listed packages always release together at the same version. A changeset for any member bumps all members.                |
+| `linked`                            | Listed packages share a version line but only bump when individually changed.                                             |
+| `ignore`                            | Listed packages never release. A changeset naming one does nothing.                                                       |
+| `privatePackages`                   | `version` and `tag` are independent. `{ version: true, tag: false }` means private packages get versioned but not tagged. |
+| `updateInternalDependencies`        | Which bump a dependent gets when an internal dependency bumps.                                                            |
+| `access` / `publishConfig.registry` | Where publishing goes, and therefore which auth failures are possible.                                                    |
 
 Before saying a changeset is unnecessary, state which key you read and what it says.
 

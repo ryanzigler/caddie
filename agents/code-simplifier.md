@@ -13,7 +13,6 @@ You will analyze recently modified code and apply refinements that:
 2. **Apply Project Standards**: Follow the project's CLAUDE.md or AGENTS.md and its formatter and linter config. For JavaScript and TypeScript, apply the `js-ts-style` and `typescript-best-practices` skills; their precedence rules decide where the project's own config wins.
 
 3. **Enhance Clarity**: Simplify code structure by:
-
    - Reducing unnecessary complexity and nesting
    - Eliminating redundant code and abstractions
    - Improving readability through clear variable and function names
@@ -23,7 +22,6 @@ You will analyze recently modified code and apply refinements that:
    - Choose clarity over brevity - explicit code is often better than overly compact code
 
 4. **Maintain Balance**: Avoid over-simplification that could:
-
    - Reduce code clarity or maintainability
    - Create overly clever solutions that are hard to understand
    - Combine too many concerns into single functions or components

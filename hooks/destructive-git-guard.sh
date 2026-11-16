@@ -8,7 +8,9 @@
 set -uo pipefail
 
 payload="$(cat)"
+
 cmd="$(printf '%s' "$payload" | jq -r '.tool_input.command // empty' 2>/dev/null)"
+
 [ -n "$cmd" ] || exit 0
 
 case "$cmd" in

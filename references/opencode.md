@@ -31,15 +31,15 @@ ask in conversation and preserve the workflow's wait for the answer.
 
 OpenCode's `subagent` tool dispatches registered subagents. Translate Claude roles:
 
-| Shared role | OpenCode agent |
-| --- | --- |
-| `Explore` | `explore` |
-| `general-purpose` | `general` |
-| `caddie-agent` | `caddie-agent` |
-| `code-reviewer` | `caddie-code-reviewer` |
+| Shared role       | OpenCode agent           |
+| ----------------- | ------------------------ |
+| `Explore`         | `explore`                |
+| `general-purpose` | `general`                |
+| `caddie-agent`    | `caddie-agent`           |
+| `code-reviewer`   | `caddie-code-reviewer`   |
 | `code-simplifier` | `caddie-code-simplifier` |
-| `comment-sicko` | `caddie-comment-sicko` |
-| `issue-filer` | `caddie-issue-filer` |
+| `comment-sicko`   | `caddie-comment-sicko`   |
+| `issue-filer`     | `caddie-issue-filer`     |
 
 Caddie's runtime registers native agents from the shared bodies, omits Claude-only frontmatter,
 supplies the original source path, and leaves model selection to OpenCode. Pass
@@ -91,8 +91,7 @@ and reasoning. A missing history source is an evidence gap, not an empty history
 The OpenCode runtime calls the shared Bash guards with normalized payloads:
 `shell` is checked before execution; `edit`, `write`, and `patch` are checked
 afterward. A rejected git command throws before the tool runs. Suppression feedback
-is appended to the tool result; it cannot undo the edit. Retired writing skills are
-rejected with a direction to load `caddie-ryan-voice-guide`. Hooks cover these built-in tool
+is appended to the tool result; it cannot undo the edit. Hooks cover these built-in tool
 paths, not arbitrary custom tools or edits performed through shell commands.
 
 Bash and `jq` must be on PATH. Python 3 is required only for history workflows.

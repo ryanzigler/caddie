@@ -86,9 +86,9 @@ before you call it done.
 
 It exits nonzero with a message and the tail of the Codex log on stderr:
 
-| Message | What to do |
-| --- | --- |
-| `codex CLI not found` | Tell the user to install Codex (`brew install codex`) and run `codex login`. |
-| `codex is not logged in` | Tell the user to run `codex login` with their ChatGPT account. |
+| Message                                | What to do                                                                                                                         |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `codex CLI not found`                  | Tell the user to install Codex (`brew install codex`) and run `codex login`.                                                       |
+| `codex is not logged in`               | Tell the user to run `codex login` with their ChatGPT account.                                                                     |
 | `finished without generating an image` | Read the log tail. A refusal means rewording the brief; a usage-limit message means the quota is spent, so tell the user and stop. |
-| `codex exec failed` | Report the log tail. Retry once only if it looks transient (network, timeout). |
+| `codex exec failed`                    | Report the log tail. Retry once only if it looks transient (network, timeout).                                                     |

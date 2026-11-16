@@ -41,13 +41,13 @@ question is specifically what a subagent did.
 
 Every line is one JSON object with a `type`. The types that carry content:
 
-| `type` | What it holds |
-|---|---|
-| `user` | A turn from the user side. `message.content` is a **string** for a prompt Ryan actually typed, and an **array** when it is carrying `tool_result` blocks. `isMeta: true` marks injected context (expanded slash commands, system reminders), not something he wrote. |
-| `assistant` | `message.content` is an array of blocks: `text`, `thinking`, `tool_use`, each with `.type`. A `tool_use` block has `.name` and `.input`. |
-| `ai-title` / `custom-title` | A one-line session title. Repeated; take the last. |
-| `last-prompt` | `.lastPrompt`, **truncated with a trailing `…`**. Cheap for triage, useless as content. |
-| `attachment`, `mode`, `permission-mode`, `atis-latch`, `queue-operation`, `system`, `file-history-snapshot`, `cost-state` | Bookkeeping. Ignore. |
+| `type`                                                                                                                    | What it holds                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `user`                                                                                                                    | A turn from the user side. `message.content` is a **string** for a prompt Ryan actually typed, and an **array** when it is carrying `tool_result` blocks. `isMeta: true` marks injected context (expanded slash commands, system reminders), not something he wrote. |
+| `assistant`                                                                                                               | `message.content` is an array of blocks: `text`, `thinking`, `tool_use`, each with `.type`. A `tool_use` block has `.name` and `.input`.                                                                                                                             |
+| `ai-title` / `custom-title`                                                                                               | A one-line session title. Repeated; take the last.                                                                                                                                                                                                                   |
+| `last-prompt`                                                                                                             | `.lastPrompt`, **truncated with a trailing `…`**. Cheap for triage, useless as content.                                                                                                                                                                              |
+| `attachment`, `mode`, `permission-mode`, `atis-latch`, `queue-operation`, `system`, `file-history-snapshot`, `cost-state` | Bookkeeping. Ignore.                                                                                                                                                                                                                                                 |
 
 `user` and `assistant` records also carry `cwd`, `gitBranch`, `timestamp`, `sessionId`,
 `uuid`, and `parentUuid` — use `gitBranch` and `timestamp` for the thread status tags.

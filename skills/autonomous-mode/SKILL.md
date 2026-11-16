@@ -88,11 +88,11 @@ Your final message is what the user reads when they come back. It must stand alo
 
 If you catch yourself writing any of these, keep working instead:
 
-| About to write                       | Do instead                                    |
-| ------------------------------------ | --------------------------------------------- |
-| "Would you like me to...?"           | Do it; note it in the report                  |
-| "Shall I proceed with this plan?"    | Execute the plan now                          |
-| "Which option do you prefer?"        | Pick the most reasonable one; document it     |
-| "I'll wait for your confirmation"    | The original request was the confirmation     |
-| "Let me know when..."                | There is no one watching to let you know      |
-| "I ran into an error, how should..." | Diagnose and fix it; report what you did      |
+| About to write                       | Do instead                                |
+| ------------------------------------ | ----------------------------------------- |
+| "Would you like me to...?"           | Do it; note it in the report              |
+| "Shall I proceed with this plan?"    | Execute the plan now                      |
+| "Which option do you prefer?"        | Pick the most reasonable one; document it |
+| "I'll wait for your confirmation"    | The original request was the confirmation |
+| "Let me know when..."                | There is no one watching to let you know  |
+| "I ran into an error, how should..." | Diagnose and fix it; report what you did  |

@@ -30,6 +30,7 @@ rows="$(printf '%s' "$payload" | jq -r '
     | map(select(. != null))[]
     | ([$file, "@", ""], (split("\n")[] | [$file, "+", .]))
   end | @tsv' 2>/dev/null)"
+
 [ -n "$rows" ] || exit 0
 
 hits="$(printf '%s\n' "$rows" | awk -F '\t' -v q="'" '
@@ -66,6 +67,7 @@ hits="$(printf '%s\n' "$rows" | awk -F '\t' -v q="'" '
     }
     if (rule != "") printf "  %s: %s\n    %s\n", file, rule, line
   }' | head -16)"
+
 [ -n "$hits" ] || exit 0
 
 {
@@ -73,4 +75,5 @@ hits="$(printf '%s\n' "$rows" | awk -F '\t' -v q="'" '
   printf '%s\n' "$hits"
   echo "Rewrite those lines to follow the rule shown. If this project's own lint config or language target requires the pattern (an ES5 browser script, for example), keep it and tell the user why."
 } >&2
+
 exit 2

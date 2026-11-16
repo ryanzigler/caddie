@@ -2,8 +2,8 @@
 name: code-simplifier
 description: Simplify recently changed code for clarity and maintainability while preserving behavior. Use when asked to simplify or tidy a diff or to run Caddie's code-simplifier.
 ---
-In OpenCode, first read [the host adapter](../../references/opencode.md).
 
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Simplify code
 

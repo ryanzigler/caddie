@@ -8,7 +8,7 @@ Examples throughout are Jira, GitHub Issues, and Linear. Adapt to whichever trac
 - Specs, PRDs, and design notes attached to or embedded in issues
 - Parent/child and epic/story relationships, where the broader initiative carries the "why"
 - Comments: clarifications, scope changes, decision records
-- Labels and components (`compliance`, `customer-request`, `perf`, `incident-followup`) that signal the *type* of motivation
+- Labels and components (`compliance`, `customer-request`, `perf`, `incident-followup`) that signal the _type_ of motivation
 - Status transitions and sprint history that explain scope changes
 - Linked PRs and commits
 

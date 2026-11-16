@@ -62,12 +62,12 @@ wherever those differ, and a root-level one for files sitting at the package roo
 
 A CLI package commonly has three environments plus the root:
 
-| Directory | Environment | Needs |
-|---|---|---|
-| `src/` (CLI) | Node | `types: ["node"]`, Node `lib` |
-| `inject/` | Browser, injected into a host page | DOM `lib`, no Node types, its own ambient globals |
-| `scripts/` | Node build-time | `types: ["node"]` |
-| package root | Node, for `build.ts` and config files | a root tsconfig that includes them |
+| Directory    | Environment                           | Needs                                             |
+| ------------ | ------------------------------------- | ------------------------------------------------- |
+| `src/` (CLI) | Node                                  | `types: ["node"]`, Node `lib`                     |
+| `inject/`    | Browser, injected into a host page    | DOM `lib`, no Node types, its own ambient globals |
+| `scripts/`   | Node build-time                       | `types: ["node"]`                                 |
+| package root | Node, for `build.ts` and config files | a root tsconfig that includes them                |
 
 The root case is the one most often missed: a package with per-directory configs but no
 root config leaves `build.ts` and root-level scripts outside every project, so they resolve

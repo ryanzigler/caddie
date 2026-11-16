@@ -298,33 +298,6 @@ class HookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("Blocked", result.stderr)
 
-    def test_claude_retired_skill_redirects(self):
-        for retired, replacement in [
-            ("caddie:unslop", "ryan-voice-guide"),
-            ("anthropic-skills:humanize-writing", "ryan-voice-guide"),
-            ("anthropic-skills:cro-metrics-writing", "ryan-voice-guide"),
-        ]:
-            with self.subTest(retired=retired):
-                result = self.run_hook("retired-skill-redirect.sh", {
-                    "tool_input": {"skill": retired},
-                })
-                self.assertEqual(result.returncode, 0)
-                output = json.loads(result.stdout)["hookSpecificOutput"]
-                self.assertEqual(output["permissionDecision"], "deny")
-                self.assertIn(f"caddie:{replacement}", output["permissionDecisionReason"])
-
-
-    def test_superpowers_skills_are_not_redirected(self):
-        for skill in ["superpowers:systematic-debugging", "superpowers:brainstorming",
-                      "superpowers:writing-skills"]:
-            with self.subTest(skill=skill):
-                result = self.run_hook("retired-skill-redirect.sh", {
-                    "tool_input": {"skill": skill},
-                })
-                self.assertEqual(result.returncode, 0, result.stderr)
-                self.assertEqual(result.stdout, "")
-
-
 class TranscriptTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()

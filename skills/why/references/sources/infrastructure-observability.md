@@ -6,7 +6,7 @@ This category covers whatever holds the runtime record: what actually happened i
 
 ## What this source contains
 
-- **Metrics.** Counters, gauges, histograms. A metric's *existence* is itself evidence: someone thought this number worth watching.
+- **Metrics.** Counters, gauges, histograms. A metric's _existence_ is itself evidence: someone thought this number worth watching.
 - **Monitors and alerts.** Conditions the team decided warranted waking someone up. A monitor firing at `rate_limit_hit > 10/min` is direct evidence the team worried about that threshold, and the threshold is frequently the literal answer to "why is this clamped at N?"
 - **Dashboards.** Curated views. The charts show what the team considers important for a subsystem, and who built the view.
 - **Logs.** The error conditions that motivated defensive code.

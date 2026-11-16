@@ -35,11 +35,12 @@ the model's available skill list.
 
 This integration targets OpenCode v2.0.22. Its [host adapter](references/opencode.md)
 translates delegation, tools, and workflow paths. The runtime bridges the shared
-git, suppression, JS/TS style, and retired-skill guards to v2 tool hooks. The guards require
-Bash and `jq`; optional history workflows require Python 3.9+. Installation does
-not require Python. The Claude quota-bar UI module stays Claude-only.
-OpenCode v1 uses a different plugin API and is not supported by
-this entrypoint. See the official [v2 plugin documentation](https://opencode.ai/v2/docs/build/plugins/).
+git, suppression, and JS/TS style. The guards require Bash and `jq`; optional history
+workflows require Python 3.9+. Installation does not require Python. The Claude
+quota-bar UI module stays Claude-only. OpenCode v1 uses a different plugin API and
+is not supported by this entrypoint.
+
+See the official [v2 plugin documentation](https://opencode.ai/v2/docs/build/plugins/).
 
 Manage the installed package with OpenCode:
 
@@ -102,10 +103,9 @@ require a host with delegation available. Explicit-only skills carry Codex's
 On Codex hosts with plugin hooks enabled, review and trust the bundled hooks before
 expecting them to run; until then the `SessionStart` user instructions are not
 injected either. The shared git, suppression, and style hooks require Bash and `jq`;
-Codex transcript recall also requires Python 3. The retired-skill redirect is
-Claude-only; Codex follows the adapter's replacement table. See the official
-[plugin packaging](https://developers.openai.com/plugins/build/plugins) and
-[hook documentation](https://learn.chatgpt.com/docs/hooks) for host requirements.
+Codex transcript recall also requires Python 3. Codex follows the adapter's
+replacement table. See the official [plugin packaging](https://developers.openai.com/plugins/build/plugins) and [hook documentation](https://learn.chatgpt.com/docs/hooks)
+for host requirements.
 
 ### Claude Code
 
@@ -280,7 +280,6 @@ or `/caddie-automate-me` in OpenCode.
 Shipped in [`hooks/hooks.json`](hooks/hooks.json), mirrored for Codex in [`hooks/codex-hooks.json`](hooks/codex-hooks.json) without the Claude-only `modules`; each guard is a few lines of bash and exits 2 with a message the model reads.
 
 - [`user-instructions.sh`](hooks/user-instructions.sh): on `SessionStart`, prints [`user-instructions.md`](hooks/user-instructions.md) into the session context in both Claude Code and Codex. It is the single source for what used to be `~/.claude/CLAUDE.md`; edit it here.
-- [`retired-skill-redirect.sh`](hooks/retired-skill-redirect.sh): redirects retired writing skills (`unslop`, `humanize-writing`, and `cro-metrics-writing`) to `ryan-voice-guide`.
 - [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 - [`js-style-guard.sh`](hooks/js-style-guard.sh): fires after an edit that adds `var`, `.forEach`, an index `for` loop, CommonJS outside `.cjs`, loose equality other than `== null`, `any`, an unbraced body on the line after its condition, or a `return` with no blank line before it to a JS or TS file, and sends the model back to the `js-ts-style` rule. It reads only added lines, with strings and comments stripped.
@@ -291,10 +290,10 @@ Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
 
 Claude Code loads [`.mcp.json`](.mcp.json); Codex loads [`.codex-mcp.json`](.codex-mcp.json) through its manifest. They hold only servers no plugin ships. Neither needs an environment variable.
 
-| Server | Claude Code | Codex | Machine requirement |
-| --- | --- | --- | --- |
-| `harvest` | yes | yes | OAuth sign-in once per machine (`/mcp` in Claude Code, `codex mcp login harvest` in Codex) |
-| `playwright` | no | yes | Node.js for `npx` |
+| Server       | Claude Code | Codex | Machine requirement                                                                        |
+| ------------ | ----------- | ----- | ------------------------------------------------------------------------------------------ |
+| `harvest`    | yes         | yes   | OAuth sign-in once per machine (`/mcp` in Claude Code, `codex mcp login harvest` in Codex) |
+| `playwright` | no          | yes   | Node.js for `npx`                                                                          |
 
 ## Third-party plugins
 

@@ -6,6 +6,7 @@ where possible. This skeleton is not a list of preferences to impose.
 
 ```markdown
 ---
+
 name: <handle>-mode
 description: Apply the user's confirmed working conventions to the current task.
 disable-model-invocation: true

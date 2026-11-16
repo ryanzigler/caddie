@@ -6,12 +6,14 @@
 set -uo pipefail
 
 failed=()
+
 run() {
   echo "+ $*"
   "$@" || failed+=("$*")
 }
 
 claude_marketplaces=(anthropics/claude-plugins-official openai/codex-plugin-cc vast-ai/vast-claude-plugin upstash/context7)
+
 claude_plugins=(
   claude-md-management@claude-plugins-official
   commit-commands@claude-plugins-official
@@ -25,7 +27,9 @@ claude_plugins=(
   vastai@vast-ai
   context7@context7-marketplace
 )
+
 codex_marketplaces=(upstash/context7)
+
 codex_plugins=(
   context7@context7-marketplace
   figma@openai-curated-remote
@@ -40,9 +44,11 @@ if [[ "$(uname)" == Darwin ]]; then
 fi
 
 for marketplace in "${claude_marketplaces[@]}"; do run claude plugin marketplace add "$marketplace"; done
+
 for plugin in "${claude_plugins[@]}"; do run claude plugin install "$plugin"; done
 
 for marketplace in "${codex_marketplaces[@]}"; do run codex plugin marketplace add "$marketplace"; done
+
 for plugin in "${codex_plugins[@]}"; do run codex plugin add "$plugin"; done
 
 if ((${#failed[@]})); then
@@ -50,4 +56,5 @@ if ((${#failed[@]})); then
   printf '  %s\n' "${failed[@]}" >&2
   exit 1
 fi
+
 echo "Done. Restart Claude Code and Codex to load the changes."

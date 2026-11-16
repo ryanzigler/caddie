@@ -1,0 +1,47 @@
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  /**
+   * Enable code actions on save
+   */
+  "editor.codeActionsOnSave": {
+    "source.action.noDuplicateClasses.biome": "explicit",
+    "source.action.useSortedAttributes.biome": "explicit",
+    "source.action.useSortedInterfaceMembers.biome": "explicit",
+    "source.action.useSortedKeys.biome": "explicit",
+    "source.action.useSortedProperties.biome": "explicit",
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  /**
+   * Use BiomeJS as the default formatter for all compatible files
+   */
+  "editor.defaultFormatter": "biomejs.biome",
+  /**
+   * Format on save
+   */
+  "editor.formatOnSave": true,
+  // EDITOR CONFIG
+  "editor.tabSize": 2,
+  // LF
+  "files.eol": "\n",
+  "tailwindCSS.experimental.classRegex": [
+    ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ]
+}

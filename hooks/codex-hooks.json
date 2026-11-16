@@ -1,46 +1,37 @@
 {
   "hooks": {
-    "SessionStart": [
+    "PostToolUse": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/user-instructions.sh\""
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/suppression-guard.sh\"",
+            "type": "command"
+          },
+          {
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/js-style-guard.sh\"",
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": "Edit|Write|MultiEdit"
       }
     ],
     "PreToolUse": [
       {
-        "matcher": "Skill",
         "hooks": [
           {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/retired-skill-redirect.sh\""
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/destructive-git-guard.sh\"",
+            "type": "command"
           }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/destructive-git-guard.sh\""
-          }
-        ]
+        ],
+        "matcher": "Bash"
       }
     ],
-    "PostToolUse": [
+    "SessionStart": [
       {
-        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/suppression-guard.sh\""
-          },
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/js-style-guard.sh\""
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/user-instructions.sh\"",
+            "type": "command"
           }
         ]
       }

@@ -18,31 +18,20 @@ When a workflow needs a user decision, use the host's available question tool in
 the modes where it is supported, otherwise ask in conversation. Preserve the
 workflow's wait for the answer; a tool being unavailable does not supply an answer.
 
-These Caddie workflows replace the corresponding retired workflows:
-
-| Retired skill | Caddie replacement |
-| --- | --- |
-| `caddie:unslop` | `caddie:ryan-voice-guide` |
-| `anthropic-skills:humanize-writing` | `caddie:ryan-voice-guide` |
-| `anthropic-skills:cro-metrics-writing` | `caddie:ryan-voice-guide` |
-
-Use the replacement's actual instructions when one of these workflows is needed.
-The Claude `Skill` hook does not enforce this routing in Codex.
-
 ## Subagents
 
 Use the host's available spawn tool. Claude's `subagent_type` values below are
 roles to translate, not Codex tool arguments:
 
-| Claude role | Codex dispatch |
-| --- | --- |
-| `Explore` | An available explorer agent, otherwise a general agent instructed to read only. |
-| `general-purpose` | An available general agent with the task's required tools. |
-| `comment-sicko` | Read [the shared agent](../agents/comment-sicko.md), then pass its full Markdown body and the scoped task to a general agent. |
-| `issue-filer` | Read [the shared agent](../agents/issue-filer.md), then pass its full Markdown body and the context packet to a general agent. |
-| `code-reviewer` | Read [the shared agent](../agents/code-reviewer.md), then pass its full Markdown body and the scoped review to a general agent. |
-| `caddie-agent` | Read [the shared agent](../agents/caddie-agent.md), then pass its full Markdown body, the absolute [mode path](../skills/caddie-mode/SKILL.md), and the scoped task to a general agent. |
-| `code-simplifier` | Read [the shared agent](../agents/code-simplifier.md), then pass its full Markdown body and the scoped task to a general agent. |
+| Claude role       | Codex dispatch                                                                                                                                                                          |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Explore`         | An available explorer agent, otherwise a general agent instructed to read only.                                                                                                         |
+| `general-purpose` | An available general agent with the task's required tools.                                                                                                                              |
+| `comment-sicko`   | Read [the shared agent](../agents/comment-sicko.md), then pass its full Markdown body and the scoped task to a general agent.                                                           |
+| `issue-filer`     | Read [the shared agent](../agents/issue-filer.md), then pass its full Markdown body and the context packet to a general agent.                                                          |
+| `code-reviewer`   | Read [the shared agent](../agents/code-reviewer.md), then pass its full Markdown body and the scoped review to a general agent.                                                         |
+| `caddie-agent`    | Read [the shared agent](../agents/caddie-agent.md), then pass its full Markdown body, the absolute [mode path](../skills/caddie-mode/SKILL.md), and the scoped task to a general agent. |
+| `code-simplifier` | Read [the shared agent](../agents/code-simplifier.md), then pass its full Markdown body and the scoped task to a general agent.                                                         |
 
 For bundled agents, strip only YAML frontmatter; preserve the complete instructions.
 Pass the absolute agent-file path so the child can resolve links relative to it.
@@ -86,8 +75,7 @@ field and also match `Edit` and `Write`. The existing matchers therefore reach t
 git guard, suppression guard, and style guard without a separate Codex hook configuration.
 
 The git guard runs before execution. The suppression and style guards run after
-execution and ask for a correction; they cannot undo the edit. The retired-skill redirect
-requires Claude's `Skill` tool, so use the routing table above in Codex. Hooks do
+execution and ask for a correction; they cannot undo the edit. Hooks do
 not cover every possible tool path or edits made through shell commands.
 
 Codex provides `CLAUDE_PLUGIN_ROOT` for these shared hook commands. This guarantee

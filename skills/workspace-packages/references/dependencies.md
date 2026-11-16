@@ -2,12 +2,12 @@
 
 Decide by asking what the **consumer's install** needs, not by what makes the local build pass.
 
-| Field | Test |
-|---|---|
-| `dependencies` | The consumer needs this at runtime after installing the package. |
-| `devDependencies` | Only this repo needs it — tests, linting, the build toolchain. Never reaches a consumer. |
-| `peerDependencies` | The consumer must supply it, and two copies would break (React, a bundler plugin's host). |
-| `optionalDependencies` | Install may fail and the package still works. |
+| Field                  | Test                                                                                      |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `dependencies`         | The consumer needs this at runtime after installing the package.                          |
+| `devDependencies`      | Only this repo needs it — tests, linting, the build toolchain. Never reaches a consumer.  |
+| `peerDependencies`     | The consumer must supply it, and two copies would break (React, a bundler plugin's host). |
+| `optionalDependencies` | Install may fail and the package still works.                                             |
 
 ## The failure that keeps recurring
 

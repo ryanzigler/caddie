@@ -9,9 +9,9 @@ the section holds; replace it with evidence.
 
 Calibrated <YYYY-MM-DD>. Hand-picked pieces: <n>.
 
-| Source | Items read | Date range | Notes |
-| --- | --- | --- | --- |
-<one row per source, including any marked unreachable>
+| Source                                                 | Items read | Date range | Notes |
+| ------------------------------------------------------ | ---------- | ---------- | ----- |
+| <one row per source, including any marked unreachable> |
 
 ## Core rules
 
@@ -21,12 +21,12 @@ Usually: <habits with a rate, e.g. "Leads with the ask, then context (about 4 in
 
 ## Registers
 
-| Register | Length | Opener | Formality | Formatting | Structure |
-| --- | --- | --- | --- | --- | --- |
-| Peer chat | | | | | |
-| Client-facing | | | | | owns structure and length for client work |
-| PR and commit | | | | | |
-| Long-form doc | | | | | |
+| Register      | Length | Opener | Formality | Formatting | Structure                                 |
+| ------------- | ------ | ------ | --------- | ---------- | ----------------------------------------- |
+| Peer chat     |        |        |           |            |                                           |
+| Client-facing |        |        |           |            | owns structure and length for client work |
+| PR and commit |        |        |           |            |                                           |
+| Long-form doc |        |        |           |            |                                           |
 
 ## Vocabulary
 
@@ -36,7 +36,7 @@ Never uses: <words a model would reach for that appear zero times>
 ## Signature phrases
 
 | Phrase | Observed rate | Registers |
-| --- | --- | --- |
+| ------ | ------------- | --------- |
 
 ## Mechanics
 

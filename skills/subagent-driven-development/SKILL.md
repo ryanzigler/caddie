@@ -2,14 +2,13 @@
 name: subagent-driven-development
 description: Execute a substantial plan using a fresh implementer and independent review for each task. Use when a plan has separable implementation tasks that benefit from isolated context, or when the user asks for delegated implementation. Prefer executing-plans for small or tightly coupled work and when the user selects inline execution.
 ---
-In OpenCode, first read [the host adapter](../../references/opencode.md).
 
+In OpenCode, first read [the host adapter](../../references/opencode.md).
 
 # Subagent-driven development
 
 In Codex, read [the host adapter](../../references/codex.md) for bundled reviewer
 and agent dispatch; the Claude agent name is not a registered Codex role.
-
 
 Coordinate implementation, task review, and final integration review. Keep decisions
 and progress in durable files so a resumed session does not repeat completed work.

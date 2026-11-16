@@ -1,0 +1,103 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedInterfaceMembers": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    },
+    "includes": ["**"]
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**"]
+  },
+  "formatter": {
+    "attributePosition": "auto",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "enabled": true,
+    "expand": "auto",
+    "formatWithErrors": false,
+    "indentStyle": "space"
+  },
+  "javascript": {
+    "assist": {
+      "enabled": true
+    },
+    "formatter": {
+      "attributePosition": "auto",
+      "operatorLinebreak": "before",
+      "quoteStyle": "single"
+    },
+    "globals": ["_"]
+  },
+  "json": {
+    "assist": {
+      "enabled": true
+    },
+    "formatter": {
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineEnding": "lf",
+      "lineWidth": 80
+    }
+  },
+  "linter": {
+    "domains": {
+      "types": "recommended"
+    },
+    "rules": {
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "error",
+        "noForEach": "error",
+        "useArrayFind": "error",
+        "useWhile": "error"
+      },
+      "nursery": {
+        "noMisleadingReturnType": "error",
+        "noUselessTypeConversion": "error",
+        "useStringStartsEndsWith": "error"
+      },
+      "preset": "recommended",
+      "style": {
+        "noCommonJs": "error",
+        "useConsistentArrowReturn": "warn",
+        "useDestructuring": "error",
+        "useForOf": "warn",
+        "useSingleVarDeclarator": "error",
+        "useSpreadOverApply": "error"
+      },
+      "suspicious": {
+        "noReturnAssign": "error",
+        "noVar": "error"
+      }
+    }
+  },
+  "markdown": {
+    "formatter": {
+      "enabled": true,
+      "formatEmbeds": true
+    },
+    "linter": {
+      "enabled": true
+    },
+    "parser": {
+      "frontmatter": true,
+      "gfm": true
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
+  },
+  "yaml": {
+    "formatter": {
+      "enabled": true
+    }
+  }
+}

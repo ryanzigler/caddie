@@ -1,32 +1,32 @@
 {
-  "name": "caddie",
-  "version": "0.15.0",
-  "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
+  "apps": "./.app.json",
   "author": {
     "name": "Ryan Zigler"
   },
+  "description": "Reads the green, hands you the right club. Personal skills, agents, etc.",
   "homepage": "https://github.com/ryanzigler/caddie",
-  "repository": "https://github.com/ryanzigler/caddie",
-  "license": "MIT",
-  "keywords": ["skills", "engineering", "workflows"],
-  "skills": "./skills/",
-  "mcpServers": "./.codex-mcp.json",
   "hooks": "./hooks/codex-hooks.json",
-  "apps": "./.app.json",
   "interface": {
-    "displayName": "Caddie",
-    "shortDescription": "Personal engineering skills and workflows",
-    "longDescription": "Debug bugs, investigate code, review changes, and recover working context with Caddie's shared engineering workflows.",
-    "developerName": "Ryan Zigler",
-    "category": "Productivity",
-    "capabilities": ["Read", "Write"],
-    "websiteURL": "https://github.com/ryanzigler/caddie",
-    "logo": "./assets/caddie-mark.png",
-    "logoDark": "./assets/caddie-mark-dark.png",
     "brandColor": "#246B4F",
+    "capabilities": ["Read", "Write"],
+    "category": "Productivity",
     "composerIcon": "./assets/caddie-mark.png",
     "defaultPrompt": [
       "Use the Caddie \"how\" skill to explain how this project works."
-    ]
-  }
+    ],
+    "developerName": "Ryan Zigler",
+    "displayName": "Caddie",
+    "logo": "./assets/caddie-mark.png",
+    "logoDark": "./assets/caddie-mark-dark.png",
+    "longDescription": "Debug bugs, investigate code, review changes, and recover working context with Caddie's shared engineering workflows.",
+    "shortDescription": "Personal engineering skills and workflows",
+    "websiteURL": "https://github.com/ryanzigler/caddie"
+  },
+  "keywords": ["skills", "engineering", "workflows"],
+  "license": "MIT",
+  "mcpServers": "./.codex-mcp.json",
+  "name": "caddie",
+  "repository": "https://github.com/ryanzigler/caddie",
+  "skills": "./skills/",
+  "version": "0.15.1"
 }

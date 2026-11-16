@@ -2,7 +2,7 @@
 
 Not a separate source. A **cross-cutting angle** appended to whichever playbook you were given.
 
-Incidents motivate defensive code more often than any other single cause ("we added this check after the X outage"). So when the target looks defensive — null checks, retry logic, timeout handling, rate limiting, feature flags, guard clauses, fallbacks, memory guards — hunt for incident history *inside your own assigned source*. Do not go chase another source; record cross-source leads under "Additional leads".
+Incidents motivate defensive code more often than any other single cause ("we added this check after the X outage"). So when the target looks defensive — null checks, retry logic, timeout handling, rate limiting, feature flags, guard clauses, fallbacks, memory guards — hunt for incident history _inside your own assigned source_. Do not go chase another source; record cross-source leads under "Additional leads".
 
 What the incident angle looks like in each category:
 
@@ -10,7 +10,7 @@ What the incident angle looks like in each category:
 - **Issue tracker.** Tickets labeled `incident`, `sev-*`, `postmortem-action-item`, `reliability`. Postmortem action items are frequently filed as ordinary tickets with no obvious link to the code.
 - **Long-form docs.** Postmortems mentioning the target file, feature, or error string. Go straight to the "Action items" section; it usually maps to specific code.
 - **Real-time chat.** Incident and severity channels around the dates the target was added. This is where the decision was actually made, in real time, and it is often the only record.
-- **Infrastructure observability.** Formal incident records with timelines. Also dashboards and monitors created *as* postmortem action items, whose creation date will sit within days of the target's merge.
+- **Infrastructure observability.** Formal incident records with timelines. Also dashboards and monitors created _as_ postmortem action items, whose creation date will sit within days of the target's merge.
 - **Error tracking.** Issues whose first-seen and last-seen window brackets the ship date, and stack traces passing through the target.
 - **Product analytics.** Events that classify a user-visible failure often spike during an incident window. A drop in that count after the target ships is circumstantial support that the code resolved the symptom.
 

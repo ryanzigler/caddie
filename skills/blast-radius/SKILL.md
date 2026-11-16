@@ -56,7 +56,7 @@ it, go write it.
    nothing else". Find that fact. If it holds, most of the scary cases die at once. Spend
    your time here, not on a long list of maybes.
 3. **Look where grep stops.** Read the source of the library you call, and check its
-   pinned version and any local patch or override. Work out *when* things run: microtasks,
+   pinned version and any local patch or override. Work out _when_ things run: microtasks,
    unmount and teardown, effect ordering, build-time versus runtime. Follow what a symbol
    search misses — the JSON an API returns, a DB column, a wire format, bytes read by
    another language, a feature flag, a published package's declared exports and type
