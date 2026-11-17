@@ -32,6 +32,10 @@
           {
             "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/user-instructions.sh\"",
             "type": "command"
+          },
+          {
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/temp-janitor.sh\"",
+            "type": "command"
           }
         ]
       }
