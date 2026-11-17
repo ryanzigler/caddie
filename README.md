@@ -283,6 +283,48 @@ Shipped in [`hooks/hooks.json`](hooks/hooks.json), mirrored for Codex in [`hooks
 - [`destructive-git-guard.sh`](hooks/destructive-git-guard.sh): blocks `git stash`, `reset --hard`, `checkout --`/`restore`, `clean -f`, force pushes, and `branch -D`. Each one has discarded work in a real session. The user can still run them with the `!` prefix.
 - [`suppression-guard.sh`](hooks/suppression-guard.sh): fires after an edit that adds `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `biome-ignore`, and friends, and sends the model back to fix the cause. `no-comments` is the manual, whole-diff version of the same rule.
 - [`js-style-guard.sh`](hooks/js-style-guard.sh): fires after an edit that adds `var`, `.forEach`, an index `for` loop, CommonJS outside `.cjs`, loose equality other than `== null`, `any`, an unbraced body on the line after its condition, or a `return` with no blank line before it to a JS or TS file, and sends the model back to the `js-ts-style` rule. It reads only added lines, with strings and comments stripped.
+- [`temp-janitor.sh`](hooks/temp-janitor.sh): on `SessionStart`, makes sure one janitor is running that keeps `/tmp` small, then exits without printing anything. Off unless enabled; see below.
+
+### Temp janitor
+
+On the Railway container, the kernel's file and directory caches for leftover temp files are billed as memory, and they cannot be dropped from inside the container. In November 2026 one project's test harnesses left 175,467 directories in `/tmp`, which held about 10 GB of kernel cache. The `user-instructions.md` directive tells agents to clean up; the janitor deletes what they leave anyway. A memory limit on the Railway service is the hard bound on the bill. The janitor is the housekeeping under it.
+
+It runs when `CADDIE_TEMP_JANITOR=1`, or when `RAILWAY_SERVICE_ID` is set and `CADDIE_TEMP_JANITOR` is not `0`. Everywhere else the hook does nothing. When enabled, the first session to start launches one background process per user, held by a lock that a dead holder's successor takes over. That process lowers its own CPU and I/O priority, makes a pass, and sleeps for the interval.
+
+A pass deletes a top-level entry of `/tmp` only when all of these hold:
+
+- you own it, and it is not a symlink or a socket;
+- it is on the same filesystem as `/tmp`;
+- it is older than the maximum age by both modification and change time, so a freshly extracted archive with old timestamps is not stale;
+- its name is not on the keep list: `claude-<uid>` (Claude Code's live task outputs), `cc-socks` (session sockets), `tsx-<uid>` (a compile cache), and any in `CADDIE_TEMP_JANITOR_KEEP`;
+- no live process has its working directory, executable, an open file, or a memory mapping inside it. This is read from `/proc`, or from `lsof` on macOS. A pass that cannot see its own working directory is skipped. Processes it cannot inspect, such as another user's, go unseen;
+- nothing inside it was modified within the maximum age, is owned by another user, or is a socket.
+
+It deletes in batches of 200 without following symlinks or crossing into another filesystem. Before each batch it re-reads which entries are in use and re-checks type and owner. It refuses to run at all in these cases:
+
+- `/tmp` resolves to anything but `/tmp` or `/private/tmp`;
+- the temp directory overlaps the home directory, `/data`, or `RAILWAY_VOLUME_MOUNT_PATH`;
+- the temp directory shares a filesystem with `/data` or `RAILWAY_VOLUME_MOUNT_PATH`.
+
+| Variable                        | Default                                                                          | Meaning                                                                                |
+| ------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `CADDIE_TEMP_JANITOR`           | unset                                                                            | `1` enables it anywhere, `0` disables it even on Railway                               |
+| `CADDIE_TEMP_JANITOR_MAX_AGE`   | `2h`                                                                             | Age before an entry is stale, as `90m`, `2h`, `600s`, or bare minutes; at least `10m`  |
+| `CADDIE_TEMP_JANITOR_INTERVAL`  | `10m`                                                                            | Time between passes                                                                    |
+| `CADDIE_TEMP_JANITOR_KEEP`      | unset                                                                            | Extra names to keep, space- or comma-separated; shell globs such as `pytest-of-*` work |
+| `CADDIE_TEMP_JANITOR_DRY_RUN`   | unset                                                                            | `1` logs what each pass would delete and deletes nothing                               |
+| `CADDIE_TEMP_JANITOR_STATE_DIR` | `$XDG_STATE_HOME/caddie/temp-janitor`, else `~/.local/state/caddie/temp-janitor` | Where the lock and log live                                                            |
+| `CADDIE_TEMP_JANITOR_TEST_ROOT` | unset                                                                            | Tests only: a fixture directory inside `/tmp` or `$TMPDIR` to clean instead of `/tmp`  |
+
+At the default 2 hours plus a 10-minute interval, a leak of 3,600 directories an hour peaks near 8,000 entries before a pass clears it.
+
+Each pass logs one line to `janitor.log` in the state directory, rotated to `janitor.log.1` past 256 KB:
+
+```
+2026-11-16T22:10:00Z pid=812 pass dry_run=0 root=/tmp removed=412 kept=37 in_use=2 busy_inside=3 failed=0 secs=4
+```
+
+To preview a pass without deleting anything, run `CADDIE_TEMP_JANITOR=1 CADDIE_TEMP_JANITOR_DRY_RUN=1 hooks/temp-janitor.sh --once` and read the log. Without `DRY_RUN`, `--once` takes the same lock and refuses while a janitor is running. To turn it off, set `CADDIE_TEMP_JANITOR=0` on the service and stop the running janitor with `kill "$(cat ~/.local/state/caddie/temp-janitor/lock)"`. A janitor also stops on its own once its plugin version is removed, and the next session starts the current one. OpenCode does not run `SessionStart` hooks, so it relies on a Claude Code or Codex session on the same machine to start the janitor.
 
 Adapted skills carry their upstream `LICENSE` (MIT) next to the `SKILL.md`.
 
