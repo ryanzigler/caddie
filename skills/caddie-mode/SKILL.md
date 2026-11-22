@@ -42,7 +42,9 @@ Name the domain and data shape before changing logic. Use
 [domain-modeling](../domain-modeling/SKILL.md) when terms or design decisions need
 recording, [principle-type-system-discipline](../principle-type-system-discipline/SKILL.md)
 for typed contracts, and [typescript-best-practices](../typescript-best-practices/SKILL.md)
-when reading or editing TypeScript. Use
+when reading or editing TypeScript. Before the first edit to any JavaScript or
+TypeScript file, read [js-ts-style](../js-ts-style/SKILL.md) in full, and read it again
+after a context compaction; it governs every JS/TS line you write. Use
 [workspace-packages](../workspace-packages/SKILL.md) for package boundaries and
 [blast-radius](../blast-radius/SKILL.md) when callers beyond the diff could break.
 Keep the smallest change that satisfies the behavior and its verification.
