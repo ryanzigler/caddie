@@ -13,5 +13,5 @@
   "repository": "https://github.com/ryanzigler/caddie",
   "skills": ["./claude-skills/"],
   "types": "./types/index.d.ts",
-  "version": "0.16.0"
+  "version": "0.17.0"
 }
